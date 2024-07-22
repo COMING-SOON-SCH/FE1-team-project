@@ -1,11 +1,15 @@
+import * as React from 'react';
+import Main from './pages/Main';
+import { Route, Routes } from 'react-router-dom';
+
 function App() {
   return (
-    <>
     <div>
-      개발환경 구축 완료
-    </div>
-    </>
-  );
+      <Routes>
+        <Route path='/main' element={<Main />} />
+      </Routes>
+    </div >
+  )
 }
 
 export default App;

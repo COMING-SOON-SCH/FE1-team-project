@@ -2,6 +2,7 @@ import { useState } from "react";
 import Announcement from "../components/Announcement";
 import CalendarComponent from "../components/Calendar";
 import SideBar from "../components/Sidebar";
+import sidebarpicture from '../assets/sidebar.png'
 
 export default function Main() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -9,7 +10,7 @@ export default function Main() {
   return (
     <div style={mainBackGround}>
       <button style={sidebarButtonStyle} onClick={() => { setIsSidebarOpen(!isSidebarOpen) }}>
-        <img src='https://cdn.icon-icons.com/icons2/3873/PNG/512/sidebar_left_icon_244857.png' alt='button' style={{ width: '100%', height: 'auto', margin: '0' }} />
+        <img src={sidebarpicture} alt='button' style={{ width: '100%', height: 'auto', margin: '0' }} />
       </button>
       <CalendarComponent />
       <Announcement />

@@ -38,7 +38,7 @@ const AnnouncementContainer = styled.div`
   border-radius: 30px;
   background-color: white;
   width: 90%;
-  height: 40%;
+  height: 400px;
   margin-top: 10%;
   margin-left: 5%;
 `;
@@ -52,7 +52,7 @@ const AnnouncementItem = styled.div`
   margin-top: 5%;
   background-color: gray;
   width: 90%;
-  height: 20%;
+  height: 80px;
   margin-left: 5%;
 `;
 

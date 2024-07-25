@@ -1,0 +1,96 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    height: 100vh;
+    color: #000;
+    text-align: center;
+    max-width: 400px; /* 지우면 전체 */
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 0;
+  }
+
+.background {
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(238, 244, 244);
+  position: absolute;
+  z-index: -3;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    background-color: #fff;
+    border-radius: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+    position: relative;
+    font-size: 24px;
+    font-weight: bold;
+    border: solid 1px #000;
+    position: relative;
+}
+.logo-container::before, .logo-container::after {
+    position: absolute;
+    background: inherit;
+    content: '';
+    z-index: 1;
+}
+.logo-container::before {
+    width: 140px;
+    left: 30px;
+    height: 203px;
+    top: -1.5px;
+}
+.logo-container::after {
+    height: 140px;
+    left: -1.5px;
+    width: 203px;
+    top: 30px;
+}
+.logo-container > * {
+    position: relative; z-index: 2;
+}
+  
+.app-logo {
+    width: 200px;
+    border: 1px;
+  }
+  
+.app-intro {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+.button-container {
+    display: flex;
+    gap: 20px;
+  }
+  
+.btn {
+    width: 90px;
+    padding: 10px 10px;
+    font-size: 13px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+.sign-in {
+    background-color: #A0DEFF;
+    color: #000;
+    box-shadow: 2px 2px 8px 0.5px rgba(97, 94, 252, 0.6);
+  }
+  
+.sign-up {
+    background-color: #CAF4FF;
+    color: #000;
+    box-shadow: 2px 2px 8px 0.5px rgba(90, 178, 255, 0.6);
+  }

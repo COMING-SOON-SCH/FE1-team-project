@@ -7,6 +7,9 @@
 
 body {
   margin: 0;
+  font-family: 'MangoDdobak-B';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 code {

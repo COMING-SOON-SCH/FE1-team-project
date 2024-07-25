@@ -25,7 +25,7 @@ export default function Main() {
 const MainContainer = styled.div`
   background: #5ABEF5;
   width: 100vw;
-  height: 100vh;
+  height: 140vh;
   justify-content: center;
 `;
 

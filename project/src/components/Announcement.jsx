@@ -1,60 +1,73 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 
 export default function Announcement() {
   const [announcement, setAnnouncement] = useState([]);
 
   useEffect(() => {
-    setAnnouncement(
-      [
-        {
-          title: '사용 안내',
-          time: '2023-07-04'
-        },
-        {
-          title: '금지 행동 목록',
-          time: '2023-06-26'
-        },
-        {
-          title: '안녕하세요. 운영진입니다.',
-          time: '2023-05-12'
-        }
-      ]
-    )
-  }, [])
+    setAnnouncement([
+      {
+        title: '사용 안내',
+        time: '2023-07-04'
+      },
+      {
+        title: '금지 행동 목록',
+        time: '2023-06-26'
+      },
+      {
+        title: '안녕하세요. 운영진입니다.',
+        time: '2023-05-12'
+      }
+    ]);
+  }, []);
 
   return (
-    <div style={announcementStyle}>
-      <h2 style={{ marginLeft: '5%', paddingTop: '3%' }}>공지사항</h2>
-      {
-        announcement.map((data) => {
-          return (
-            <div style={{ marginTop: '5%', backgroundColor: 'gray', width: '90%', height: '20%', marginLeft: '5%' }}>
-              <h3 style={titleStyle}>{data.title}</h3>
-              <p style={{ paddingLeft: '3%', marginTop: '0' }}>{data.time}</p>
-            </div>
-          )
-        })
-      }
-    </div >
-  )
+    <AnnouncementContainer>
+      <AnnouncementTitle>공지사항</AnnouncementTitle>
+      {announcement.map((data, index) => (
+        <AnnouncementItem key={index}>
+          <ItemTitle>{data.title}</ItemTitle>
+          <ItemTime>{data.time}</ItemTime>
+        </AnnouncementItem>
+      ))}
+    </AnnouncementContainer>
+  );
 }
 
-const announcementStyle = {
-  borderRadius: '30px',
-  backgroundColor: 'white',
-  width: '90%',
-  height: '40%',
-  marginTop: '10%',
-  marginLeft: '5%'
-}
+const AnnouncementContainer = styled.div`
+  border-radius: 30px;
+  background-color: white;
+  width: 90%;
+  height: 40%;
+  margin-top: 10%;
+  margin-left: 5%;
+`;
 
-const titleStyle = {
-  marginBottom: '0',
-  whiteSpace: 'nowrap', /* 텍스트가 줄 바꿈되지 않도록 설정 */
-  overflow: 'hidden', /* 넘치는 텍스트를 숨기도록 설정 */
-  textOverflow: 'ellipsis', /* 넘치는 텍스트를 '...'으로 표시 */
-  width: '90%',
-  paddingTop: '3%',
-  paddingLeft: '3%',
-  height: '40%' /* 너비를 지정해 텍스트가 넘치도록 설정 */
-}
+const AnnouncementTitle = styled.h2`
+  margin-left: 5%;
+  padding-top: 3%;
+`;
+
+const AnnouncementItem = styled.div`
+  margin-top: 5%;
+  background-color: gray;
+  width: 90%;
+  height: 20%;
+  margin-left: 5%;
+`;
+
+const ItemTitle = styled.h3`
+  margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 90%;
+  padding-top: 3%;
+  padding-left: 3%;
+  height: 40%;
+`;
+
+const ItemTime = styled.p`
+  padding-left: 3%;
+  margin-top: 0;
+`;

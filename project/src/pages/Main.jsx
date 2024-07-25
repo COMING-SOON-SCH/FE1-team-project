@@ -1,40 +1,45 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import CalendarComponent from "../components/Calendar";
 import SideBar from "../components/Sidebar";
-import sidebarpicture from '../assets/sidebar.png'
+import sidebarpicture from '../assets/sidebar.png';
 
 export default function Main() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div style={mainBackGround}>
-      <button style={sidebarButtonStyle} onClick={() => { setIsSidebarOpen(!isSidebarOpen) }}>
-        <img src={sidebarpicture} alt='button' style={{ width: '100%', height: 'auto', margin: '0' }} />
-      </button>
+    <MainContainer>
+      <SidebarButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+        <ButtonImage src={sidebarpicture} alt='button' />
+      </SidebarButton>
       <CalendarComponent />
       <Announcement />
-      {
-        isSidebarOpen ?
-          <SideBar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-          : null
-      }
-    </div>
-  )
+      {isSidebarOpen && (
+        <SideBar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      )}
+    </MainContainer>
+  );
 }
 
-const mainBackGround = {
-  background: '#5ABEF5',
-  width: '100vw',
-  height: '100vh',
-  justifyContent: 'center'
-}
+const MainContainer = styled.div`
+  background: #5ABEF5;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+`;
 
-const sidebarButtonStyle = {
-  width: '50px',
-  height: '50px',
-  margin: '10px',
-  marginBottom: '0',
-  background: 'none',
-  border: 'none'
-}
+const SidebarButton = styled.button`
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+  margin-bottom: 0;
+  background: none;
+  border: none;
+`;
+
+const ButtonImage = styled.img`
+  width: 100%;
+  height: auto;
+  margin: 0;
+`;

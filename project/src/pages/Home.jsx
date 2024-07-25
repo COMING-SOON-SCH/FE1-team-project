@@ -1,18 +1,19 @@
 import React from 'react';
 import '../css/Home.css';
 import logo from '../assets/logo.svg';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const onClickSignIn = () => {
+    navigate('/signin');
+  };
 
     return (
       <div className="home-container">
         <div className="background" />
-        <div className="filter" />
-          <div className="circle" id="circle1" />
-          <div className="circle" id="circle2" />
-          <div className="circle" id="circle3" />
-          <div className="circle" id="circle4" />
-          <div className="circle" id="circle5" />
           <div className="logo-container">
             <img src={logo} alt="App Logo" className="app-logo" />
           </div>
@@ -21,8 +22,8 @@ const Home = () => {
             <p>크루 유니버셜 클럽</p>
           </div>
           <div className="button-container">
-            <button className="btn sign-in">로그인</button>
-            <button className="btn sign-up">회원가입</button>
+            <button className="btn sign-in" onClick={onClickSignIn}>로그인</button>
+            <Link to="/signup"><button className="btn sign-up">회원가입</button></Link>
           </div>
       </div>
     );

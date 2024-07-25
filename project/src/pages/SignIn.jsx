@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../css/SignIn.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -33,6 +34,11 @@ const BackButton = () => {
 };
 
 const SignIn = () => {
+  const navigate = useNavigate();
+
+  const onClickBackButton = () => {
+    navigate('/');
+  };
 
   const onClickForgotPassword = () => {
     alert("미지원 기능입니다.");
@@ -41,7 +47,7 @@ const SignIn = () => {
     return (
         <div className="home-container">
           <div className="background" />
-            <BackButton />
+            <BackButton onClick={onClickBackButton} />
             <OutlinedTextField />
             <button className="btn sign-in">로그인</button>
           <div className="forgot-password" onClick={onClickForgotPassword}>

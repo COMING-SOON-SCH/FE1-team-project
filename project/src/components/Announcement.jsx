@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Popup from "./Popup";
 
 export default function Announcement() {
-  const [announcement, setAnnouncement] = useState([]);
+  const [data, setdata] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedData, setSelectedData] = useState(null)
 
   useEffect(() => {
-    setAnnouncement([
+    setdata([
       {
         title: '사용 안내',
         time: '2023-07-04'
@@ -21,15 +24,27 @@ export default function Announcement() {
     ]);
   }, []);
 
+  const closePopup = () => {
+    setShowPopup(false);
+  }
+
+  const onClick = (data) => {
+    setShowPopup(true)
+    setSelectedData(data);
+  }
+
   return (
     <AnnouncementContainer>
       <AnnouncementTitle>공지사항</AnnouncementTitle>
-      {announcement.map((data, index) => (
-        <AnnouncementItem key={index}>
+      {data.map((data, index) => (
+        <AnnouncementItem key={index} onClick={() => { onClick(data) }}>
           <ItemTitle>{data.title}</ItemTitle>
           <ItemTime>{data.time}</ItemTime>
         </AnnouncementItem>
       ))}
+      {showPopup && (
+        <Popup closePopup={closePopup} data={selectedData} />
+      )}
     </AnnouncementContainer>
   );
 }

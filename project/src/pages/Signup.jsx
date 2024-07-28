@@ -36,7 +36,7 @@ function SignUp() {
           <SignupTextField texttype={'id'} value={formValues.id} onChange={handleInputChange} fullWidth />
           <PasswordField texttype={'password'} value={formValues.password} onChange={handleInputChange} fullWidth />
           <PasswordField texttype={'confirmPassword'} value={formValues.confirmPassword} onChange={handleInputChange} fullWidth />
-          <SearchField label={'university'} value={formValues.university} onChange={handleInputChange} fullWidth />
+          <SearchField texttype={'university'} value={formValues.university} onChange={handleInputChange} fullWidth  />
           <Stack spacing={2} direction="row" justifyContent="center" marginTop={2}>
             <Button variant="contained" onClick={handleSignupClick}>회원가입</Button>
           </Stack>

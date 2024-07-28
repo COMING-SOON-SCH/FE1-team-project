@@ -3,6 +3,7 @@ import Calendar from "react-calendar";
 import styled, { ThemeProvider } from "styled-components";
 import 'react-calendar/dist/Calendar.css'
 import moment from "moment";
+import Popup from "./Popup";
 
 export const theme = {
   color: {
@@ -55,12 +56,7 @@ export default function CalendarComponent() {
           showNeighboringMonth={false}
           formatDay={(locale, date) => date.toLocaleString("en", { day: "numeric" })} />
         {showPopup && (
-          <PopupOverlay onClick={closePopup}>
-            <PopupContent onClick={(e) => e.stopPropagation()}>
-              <CloseButton onClick={closePopup}>&times;</CloseButton>
-              <h3>선택된 날짜: {date.toDateString()}</h3>
-            </PopupContent>
-          </PopupOverlay>
+          <Popup closePopup={closePopup} date={date} />
         )}
       </CalendarContainer>
     </ThemeProvider>
@@ -76,36 +72,6 @@ const CalendarContainer = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-`;
-
-const PopupOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const PopupContent = styled.div`
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  position: relative;  // 추가된 부분
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
 `;
 
 const RoundBox = styled.div`

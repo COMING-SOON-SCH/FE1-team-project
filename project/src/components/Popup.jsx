@@ -1,11 +1,18 @@
 import styled from "styled-components";
 
-export default function Popup({ closePopup, date }) {
+export default function Popup({ closePopup, data }) {
   return (
     <PopupOverlay onClick={closePopup}>
       <PopupContent onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={closePopup}>&times;</CloseButton>
-        <h3>선택된 날짜: {date.toDateString()}</h3>
+        {
+          data ?
+            <div>
+              <p>{data.time}</p>
+              <h2>{data.title}</h2>
+            </div>
+            : <h2>이 날짜에는 아무런 계획이 없습니다.</h2>
+        }
       </PopupContent>
     </PopupOverlay>
   )

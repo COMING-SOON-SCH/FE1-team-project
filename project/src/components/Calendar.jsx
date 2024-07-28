@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import styled, { ThemeProvider } from "styled-components";
 import 'react-calendar/dist/Calendar.css'
@@ -17,9 +17,29 @@ export const theme = {
 export default function CalendarComponent() {
   const [date, setDate] = useState(new Date());
   const [showPopup, setShowPopup] = useState(false);
+  const [data, setData] = useState([]);
+  const [selectedData, setSelectedData] = useState(null);
+
+  useEffect(() => {
+    setData([
+      {
+        key: '1',
+        title: '공식 과제 제출일',
+        time: '2024-07-11'
+      },
+      {
+        key: '2',
+        title: '프로젝트 팀 미팅',
+        time: '2024-07-16'
+      }
+    ])
+  }, [])
 
   const onChange = (date) => {
     setDate(date);
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+    const selected = data.find((item) => item.time === formattedDate);
+    setSelectedData(selected);
     setShowPopup(true);
   }
 
@@ -27,23 +47,21 @@ export default function CalendarComponent() {
     setShowPopup(false);
   }
 
-  const dayList = [
-    '2024-07-09',
-  ];
-
   const addContent = ({ date }) => {
     // 해당 날짜(하루)에 추가할 컨텐츠의 배열
     const contents = [];
 
     // date(각 날짜)가  리스트의 날짜와 일치하면 해당 컨텐츠(이모티콘) 추가
-    if (dayList.find((day) => day === moment(date).format('YYYY-MM-DD'))) {
-      contents.push(
-        <>
-          <RoundBox />
-        </>
-      );
+    if (data) {
+      if (data.find((data) => data.time === moment(date).format('YYYY-MM-DD'))) {
+        contents.push(
+          <>
+            <RoundBox />
+          </>
+        );
+      }
+      return <div>{contents}</div>; // 각 날짜마다 해당 요소가 들어감
     }
-    return <div>{contents}</div>; // 각 날짜마다 해당 요소가 들어감
   };
 
   return (
@@ -56,7 +74,7 @@ export default function CalendarComponent() {
           showNeighboringMonth={false}
           formatDay={(locale, date) => date.toLocaleString("en", { day: "numeric" })} />
         {showPopup && (
-          <Popup closePopup={closePopup} date={date} />
+          <Popup closePopup={closePopup} data={selectedData} />
         )}
       </CalendarContainer>
     </ThemeProvider>

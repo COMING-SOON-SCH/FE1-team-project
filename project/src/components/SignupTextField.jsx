@@ -23,7 +23,7 @@ export function SignupTextField({ texttype, value, onChange }) {
 }
 
 export function PasswordField({ texttype, value, onChange }) {
-  const isPasswordField = texttype.toLowerCase().includes("password");
+  const isPasswordField = () =>{texttype.toLowerCase().includes("password")};
   <Box
       component="form"
       noValidate
@@ -59,28 +59,35 @@ export function PasswordField({ texttype, value, onChange }) {
   );
 }
 
-export function SearchField({ label, value, onChange }) {
+
+export function SearchField({ texttype, value, onChange }) {
   const handleSearchClick = () => {
     alert("아직 구현중인 기능입니다.");
   };
-
   return (
+    
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6}>
         <TextField
-      label={label}
-      value={value}
-      onChange={onChange}
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton>
-              <SearchIcon onclick={handleSearchClick}/>
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
-    />
+          autoComplete={texttype}
+          name={texttype}
+          required
+          fullWidth
+          id={texttype}
+          label={texttype}
+          value={value}
+          onChange={onChange}
+          autoFocus
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton>
+                  <SearchIcon onclick={handleSearchClick}/>
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
       </Grid>
     </Grid>
   );

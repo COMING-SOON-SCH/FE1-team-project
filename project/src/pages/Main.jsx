@@ -26,7 +26,6 @@ const MainContainer = styled.div`
   background: #5ABEF5;
   width: 100vw;
   height: 140vh;
-  justify-content: center;
 `;
 
 const SidebarButton = styled.button`
@@ -41,5 +40,4 @@ const SidebarButton = styled.button`
 const ButtonImage = styled.img`
   width: 100%;
   height: auto;
-  margin: 0;
 `;

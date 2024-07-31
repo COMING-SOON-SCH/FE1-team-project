@@ -80,11 +80,11 @@ const AnnouncementContainer = styled.div`
 
 const AnnouncementTitle = styled.h2`
   margin-left: 5%;
-  padding-top: 3%;
+  padding-top: 10px;
 `;
 
 const AnnouncementItem = styled.div`
-  margin-top: 5%;
+  margin-top: 30px;
   background-color: gray;
   width: 90%;
   height: 80px;
@@ -97,7 +97,7 @@ const ItemTitle = styled.h3`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 90%;
-  padding-top: 3%;
+  padding-top: 10px;
   padding-left: 3%;
   height: 40%;
 `;

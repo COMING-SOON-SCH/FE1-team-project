@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from "styled-components";
 
 export default function Popup({ closePopup, data }) {
@@ -8,10 +9,18 @@ export default function Popup({ closePopup, data }) {
         {
           data ?
             <div>
-              <p>{data.time}</p>
-              <h2>{data.title}</h2>
+              <Time>{data.time}</Time>
+              <Title>{data.title}</Title>
+              {data.detail ?
+                <DetailContent>
+                  {data.detail.split('\n').map((line, index) => (
+                    <DetailLine key={index}>{line}</DetailLine>
+                  ))}
+                </DetailContent>
+                : null
+              }
             </div>
-            : <h2>이 날짜에는 아무런 계획이 없습니다.</h2>
+            : <Title>No Plan</Title>
         }
       </PopupContent>
     </PopupOverlay>
@@ -34,8 +43,11 @@ const PopupContent = styled.div`
   background-color: white;
   padding: 20px;
   border-radius: 10px;
-  text-align: center;
-  position: relative;  // 추가된 부분
+  text-align: left;
+  position: relative;
+  max-width: 80%;
+  max-height: 80%;
+  overflow-y: auto;
 `;
 
 const CloseButton = styled.button`
@@ -46,4 +58,22 @@ const CloseButton = styled.button`
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+`;
+
+const Time = styled.p`
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0px;
+`;
+
+const Title = styled.h2`
+  margin-bottom: 20px;
+`;
+
+const DetailContent = styled.div`
+  padding: 0px;
+`;
+
+const DetailLine = styled.p`
+  margin: 0px 0;
 `;

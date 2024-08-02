@@ -75,8 +75,9 @@ export default function CalendarComponent() {
         </LocalizationProvider>
         {showPopup && (
           <Popup
-            data={selectedData}
             closePopup={closePopup}
+            data={selectedData}
+            showPopup={showPopup}
           />
         )}
       </CalendarContainer>

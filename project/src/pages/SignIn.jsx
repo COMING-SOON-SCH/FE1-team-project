@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled, { createGlobalStyle } from 'styled-components';
 import TextField from '@mui/material/TextField';
 import Background from '../components/Background';
 import Button from '../components/Button';
@@ -16,7 +17,7 @@ const OutlinedTextField = ({userId, setUserId, password, setPassword}) => {
   }
 
   return (
-    <div className="form-container">
+    <FormContainer>
       <div className="id-box">
         <TextField
           id="id-field"
@@ -34,7 +35,7 @@ const OutlinedTextField = ({userId, setUserId, password, setPassword}) => {
         onChange={handlePasswordChange}
         />
       </div>
-    </div>
+    </FormContainer>
   );
 }
 
@@ -67,7 +68,8 @@ const SignIn = () => {
   };
 
     return (
-        <Background>
+    <>
+      <SignInStyle />
           <BackButton />
           <OutlinedTextField userId={userId} setUserId={setUserId} password={password} setPassword={setPassword} />
           <Button className="btn sign-in" onClick={handleSignIn}>로그인</Button>
@@ -75,7 +77,42 @@ const SignIn = () => {
             비밀번호를 잊으셨나요?
           </div>
         </Background>
+    </>
       );
 };
+
+const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 160px;
+  margin-bottom: 20px;
+`;
+
+const SignInStyle = createGlobalStyle`
+  .id-box, .password-box {
+    width: fit-content;
+    border-radius: 5%;
+    background: rgba(255, 255, 255, 0.5);
+  }
+  .id-box {
+    margin-top: 20px;
+  }
+  .password-box {
+    margin-top: 15px;
+  }
+
+  .forgot-password {
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 20px;
+  }
+
+  .btn {
+    font-family: 'MangoDdobak-B';
+  }
+`;
 
 export default SignIn;

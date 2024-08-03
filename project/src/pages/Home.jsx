@@ -2,8 +2,8 @@ import React from 'react';
 import logo from '../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import Background from '../components/Background';
+import styled, { createGlobalStyle } from 'styled-components';
+import Layout from '../components/Layout';
 import Button from '../components/Button';
 
 const LogoContainer = styled.div`
@@ -62,6 +62,12 @@ const ButtonContainer = styled.div`
   gap: 20px;
 `;
 
+const HomeStyle = createGlobalStyle`
+  .btn {
+    font-family: 'MangoDdobak-B';
+  }
+`;
+
 const Home = () => {
   const navigate = useNavigate();
 
@@ -70,8 +76,8 @@ const Home = () => {
   };
 
     return (
-      <Background>
-          <LogoContainer>
+      <>
+        <HomeStyle />
             <AppLogo />
           </LogoContainer>
           <AppIntro>
@@ -81,8 +87,9 @@ const Home = () => {
           <ButtonContainer>
           <Button className="sign-in" onClick={onClickSignIn}>로그인</Button>
             <Link to="/signup"><Button className="sign-up">회원가입</Button></Link>
-          </ButtonContainer>
-      </Background>
+            <Button className="btn sign-in" onClick={onClickSignIn}>로그인</Button>
+              <Link to="/signup"><Button className="btn sign-up">회원가입</Button></Link>
+      </>
     );
 };
   

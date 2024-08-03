@@ -1,18 +1,18 @@
 import styled from 'styled-components';
 
 const Background = ({ children }) => {
-    return (
-        <BackgroundContainer>
-            <BackgroundBase />
-            <BackgroundFilter />
-            <BackgroundCircle width="130px" height="130px" left="15%" top="85%" background="linear-gradient(#83b2ff, #67caff)" />
-            <BackgroundCircle width="150px" height="150px" left="12%" top="40%" background="linear-gradient(#00fbff, #7961ff)" />
-            <BackgroundCircle width="300px" height="280px" left="75%" top="65%" background="linear-gradient(#00ffd5, #00d9ff)" />
-            <BackgroundCircle width="200px" height="180px" left="-5%" top="-2%" background="linear-gradient(#4EFFF8, #57FFD7)" />
-            <BackgroundCircle width="140px" height="140px" left="55%" top="20%" background="linear-gradient(#4EFFF8, #69a2fe)" />
-            {children}
-        </BackgroundContainer>
-    );
+  return (
+    <BackgroundContainer>
+      <BackgroundBase />
+      <BackgroundFilter />
+      <BackgroundCircle width="130px" height="130px" left="15%" top="85%" background="linear-gradient(#83b2ff, #67caff)" />
+      <BackgroundCircle width="150px" height="150px" left="12%" top="40%" background="linear-gradient(#00fbff, #7961ff)" />
+      <BackgroundCircle width="300px" height="280px" left="75%" top="65%" background="linear-gradient(#00ffd5, #00d9ff)" />
+      <BackgroundCircle width="200px" height="180px" left="-5%" top="-2%" background="linear-gradient(#4EFFF8, #57FFD7)" />
+      <BackgroundCircle width="140px" height="140px" left="55%" top="20%" background="linear-gradient(#4EFFF8, #69a2fe)" />
+      {children}
+    </BackgroundContainer>
+  );
 };
 
 const BackgroundContainer = styled.div`
@@ -28,7 +28,7 @@ const BackgroundContainer = styled.div`
 
 const BackgroundBase = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: rgba(238, 244, 244);
   position: absolute;
   z-index: -3;
@@ -36,7 +36,7 @@ const BackgroundBase = styled.div`
 
 const BackgroundFilter = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 120%;
   backdrop-filter: blur(40px);
   position: absolute;
   z-index: -1;

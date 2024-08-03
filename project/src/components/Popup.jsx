@@ -51,7 +51,7 @@ const PopupContainer = styled(Box)`
 
 const AnnouncementPopup = styled(PopupContainer)`
   width: 80%;
-  height: 400px;
+  height: auto;
 `
 
 const PlanPopup = styled(PopupContainer)`

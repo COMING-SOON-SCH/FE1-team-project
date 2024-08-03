@@ -1,88 +1,93 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useSignIn from "../hooks/useSignIn";
 import styled, { createGlobalStyle } from 'styled-components';
 import TextField from '@mui/material/TextField';
 import Button from '../components/Button';
 import BackButton from '../components/BackButton';
 import Layout from '../components/Layout';
 
-const OutlinedTextField = ({userId, setUserId, password, setPassword}) => {
+const OutlinedTextField = ({ id, setId, pw, setPw }) => {
 
-  const handleUserIdChange = (event) => {
-    setUserId(event.target.value);
+  const handleIdChange = (event) => {
+    setId(event.target.value);
   }
 
   const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
+    setPw(event.target.value);
   }
 
   return (
-    <FormContainer>
+    <>
       <div className="id-box">
         <TextField
           id="id-field"
           label="아이디"
-          value={userId}
-          onChange={handleUserIdChange}
+          value={id}
+          onChange={handleIdChange}
         />
       </div>
       <div className="password-box">
         <TextField
-        id="password-field"
-        label="비밀번호"
-        type="password"
-        value={password}
-        onChange={handlePasswordChange}
+          id="password-field"
+          label="비밀번호"
+          type="password"
+          value={pw}
+          onChange={handlePasswordChange}
         />
       </div>
-    </FormContainer>
+    </>
   );
 }
 
 const SignIn = () => {
   const navigate = useNavigate();
 
-  const [userId, setUserId] = useState('');
-  const [password, setPassword] = useState('');
+  const [id, setId] = useState("");
+  const [pw, setPw] = useState("");
+  const { signIn, passwords, isError } = useSignIn();
+  const isSubmitted = useRef(false);
 
-  // 임의로 생성한 회원 정보 (로그인 확인용)
-  const registeredUsers = [
-    { userId: 'user', password: 'password'}
-  ];
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    isSubmitted.current = true;
+    await signIn(id);
+  };
 
-  const handleSignIn = () => {
-    const user = registeredUsers.find(user => user.userId === userId && user.password === password);
-    
-    if (user) {
-      navigate('/main'); // 로그인 성공 시 메인 페이지로 이동
+  useEffect(() => {
+    if (isSubmitted.current) {
+      if (passwords.length > 0 && passwords.includes(pw)) {
+        navigate('/main');
+      } else {
+        alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+      }
+      isSubmitted.current = false;
     }
-    else {
-    alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-    setUserId('');
-    setPassword('');
-    }
-  }
+  }, [passwords, pw, navigate]);
 
   const onClickForgotPassword = () => {
     alert("미지원 기능입니다.");
   };
 
-    return (
+  return (
     <>
       <SignInStyle />
-        <Layout>
-          <BackButton />
-          <OutlinedTextField userId={userId} setUserId={setUserId} password={password} setPassword={setPassword} />
-          <Button className="btn sign-in" onClick={handleSignIn}>로그인</Button>
-          <div className="forgot-password" onClick={onClickForgotPassword}>
-            비밀번호를 잊으셨나요?
-          </div>
-        </Layout>
+      <Layout>
+        <BackButton />
+        <FormContainer>
+          <OutlinedTextField id={id} setId={setId} pw={pw} setPw={setPw} />
+        </FormContainer>
+        {isError && <p>오류가 발생했습니다. 다시 시도해주세요.</p>}
+        <Button className="btn sign-in" type="submit" onClick={handleSubmit}>로그인</Button>
+        <div className="forgot-password" onClick={onClickForgotPassword}>
+          비밀번호를 잊으셨나요?
+        </div>
+      </Layout>
     </>
-      );
+  );
 };
 
-const FormContainer = styled.div`
+const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;

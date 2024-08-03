@@ -1,6 +1,4 @@
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
@@ -8,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ContactPage, Logout } from "@mui/icons-material";
 import styled from "styled-components";
 
-export default function SidebarItem({ isSidebarOpen, setIsSidebarOpen }) {
+export default function SidebarItem({ setIsSidebarOpen }) {
   const navigate = useNavigate();
   const topItems = [
     { text: '홈', url: 'main', icon: HomeIcon },
@@ -24,7 +22,7 @@ export default function SidebarItem({ isSidebarOpen, setIsSidebarOpen }) {
     if (item.url) {
       navigate(`./${item.url}`);
     } else if (item.text === '로그아웃') {
-      // 여기에 로그아웃 로직을 구현합니다.
+      // 로그아웃 로직을 구현합니다.
       console.log('로그아웃 처리');
       // 예: logout();
       // 로그아웃 후 홈 페이지로 리디렉션

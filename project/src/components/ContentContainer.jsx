@@ -12,6 +12,7 @@ const ContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 30px 0px;
 `;
 
 export default ContentContainer;

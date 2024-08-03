@@ -5,7 +5,6 @@ import SearchItem from '../components/SearchItem';
 const Container = styled.div`
   width: 300px;
   height: 260px;
-  margin-top: 30px;
   background: #D9D9D9;
   border-radius: 10px;
 `;

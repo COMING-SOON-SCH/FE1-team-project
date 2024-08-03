@@ -78,17 +78,19 @@ const Home = () => {
     return (
       <>
         <HomeStyle />
-            <AppLogo />
-          </LogoContainer>
-          <AppIntro>
-            <p>동아리 관리의 모든 것</p>
-            <p>크루 유니버셜 클럽</p>
-          </AppIntro>
-          <ButtonContainer>
-          <Button className="sign-in" onClick={onClickSignIn}>로그인</Button>
-            <Link to="/signup"><Button className="sign-up">회원가입</Button></Link>
+        <Layout>
+            <LogoContainer>
+              <AppLogo />
+            </LogoContainer>
+            <AppIntro>
+              <p>동아리 관리의 모든 것</p>
+              <p>크루 유니버셜 클럽</p>
+            </AppIntro>
+            <ButtonContainer>
             <Button className="btn sign-in" onClick={onClickSignIn}>로그인</Button>
               <Link to="/signup"><Button className="btn sign-up">회원가입</Button></Link>
+            </ButtonContainer>
+        </Layout>
       </>
     );
 };

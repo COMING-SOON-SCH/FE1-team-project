@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import TextField from '@mui/material/TextField';
-import Background from '../components/Background';
 import Button from '../components/Button';
 import BackButton from '../components/BackButton';
+import Layout from '../components/Layout';
 
 const OutlinedTextField = ({userId, setUserId, password, setPassword}) => {
 
@@ -70,13 +70,14 @@ const SignIn = () => {
     return (
     <>
       <SignInStyle />
+        <Layout>
           <BackButton />
           <OutlinedTextField userId={userId} setUserId={setUserId} password={password} setPassword={setPassword} />
           <Button className="btn sign-in" onClick={handleSignIn}>로그인</Button>
           <div className="forgot-password" onClick={onClickForgotPassword}>
             비밀번호를 잊으셨나요?
           </div>
-        </Background>
+        </Layout>
     </>
       );
 };

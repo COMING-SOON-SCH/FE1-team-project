@@ -1,18 +1,20 @@
 import React from 'react';
-import Background from '../components/Background';
+import SideBarButton from '../components/SideBarButton';
 import SearchBar from '../components/SearchBar';
 import ContentContainer from '../components/ContentContainer';
 import SearchItemContainer from '../components/SearchItemContainer';
+import Layout from '../components/Layout';
 
 const SearchClub = () => {
   return (
-    <Background>
-    <SearchBar />
-    <ContentContainer>
-        <SearchItemContainer />
-        <SearchItemContainer />
-    </ContentContainer>
-    </Background>
+    <Layout>
+      <SideBarButton />
+      <SearchBar />
+      <ContentContainer>
+          <SearchItemContainer />
+          <SearchItemContainer />
+      </ContentContainer>
+    </Layout>
   );
 };
 

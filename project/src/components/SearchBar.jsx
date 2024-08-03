@@ -20,8 +20,11 @@ const SearchBox = styled(Paper)`
 `;
 
 const SearchInput = styled(InputBase)`
-  margin-left: 8px;
-  flex: 1;
+  && {
+    font-family: 'MangoDdobak-B';
+    margin-left: 8px;
+    flex: 1;
+  }
 `;
 
 const SearchButton = styled(IconButton)`

@@ -14,7 +14,7 @@ export default function SidebarItem({ setIsSidebarOpen }) {
     { text: '동아리 만들기', url: 'makeclub', icon: CreateNewFolderIcon }
   ];
   const bottomItems = [
-    { text: '마이 페이지', url: 'mypage', icon: ContactPage },
+    { text: '마이 페이지', url: 'myhomepage', icon: ContactPage },
     { text: '로그아웃', url: null, icon: Logout }
   ];
 

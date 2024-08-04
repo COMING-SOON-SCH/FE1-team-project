@@ -1,9 +1,9 @@
-import { Box, Modal } from '@mui/material';
+import { Box, Button, Modal } from '@mui/material';
 import React from 'react';
 import styled from "styled-components";
 
-export default function Popup({ closePopup, data, showPopup }) {
-  console.log(data)
+export default function Popup({ closePopup, data, showPopup, selectedTime }) {
+  console.log(selectedTime)
   return (
     <Modal
       open={showPopup}
@@ -14,26 +14,29 @@ export default function Popup({ closePopup, data, showPopup }) {
       {data ?
         data.detail ?
           <AnnouncementPopup>
-            <div>
-              <Time>{data.time}</Time>
-              <Title>{data.title}</Title>
-              {data.detail ?
-                <DetailContent>
-                  {
-                    data.detail.split('\n').map((line, index) => (
-                      <p key={index}>{line}</p>
-                    ))
-                  }
-                </DetailContent>
-                : null
-              }
-            </div>
+            <Time>{selectedTime}</Time>
+            <Title>{data.title}</Title>
+            {data.detail ?
+              <DetailContent>
+                {
+                  data.detail.split('\n').map((line, index) => (
+                    <p key={index}>{line}</p>
+                  ))
+                }
+              </DetailContent>
+              : null
+            }
           </AnnouncementPopup>
           : <PlanPopup>
-            <Time>{data.time}</Time>
+            <Time>{selectedTime}</Time>
             <Title>{data.title}</Title>
+            <Button style={{ marginBottom: '10px' }} variant="outlined">+</Button>
           </PlanPopup>
-        : <PlanPopup><h2>No Plan</h2></PlanPopup>
+        : <PlanPopup>
+          <Time>{selectedTime}</Time>
+          <Title>No Plan</Title>
+          <Button style={{ marginBottom: '10px' }} variant="outlined">+</Button>
+        </PlanPopup>
       }
     </Modal>
   )
@@ -57,7 +60,7 @@ const AnnouncementPopup = styled(PopupContainer)`
 const PlanPopup = styled(PopupContainer)`
   border-radius: 20%;
   width: 80%;
-  height: 150px;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -67,7 +70,8 @@ const PlanPopup = styled(PopupContainer)`
 const Time = styled.p`
   color: #666;
   font-size: 0.9rem;
-  padding: 10px 0px 0px 15px;
+  margin: 0px;
+  padding: 20px 0px 0px 0px;
 `;
 
 const Title = styled.h2`

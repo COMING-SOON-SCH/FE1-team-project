@@ -1,79 +1,83 @@
+import { Box, Button, Modal } from '@mui/material';
 import React from 'react';
 import styled from "styled-components";
 
-export default function Popup({ closePopup, data }) {
+export default function Popup({ closePopup, data, showPopup, selectedTime }) {
+  console.log(selectedTime)
   return (
-    <PopupOverlay onClick={closePopup}>
-      <PopupContent onClick={(e) => e.stopPropagation()}>
-        <CloseButton onClick={closePopup}>&times;</CloseButton>
-        {
-          data ?
-            <div>
-              <Time>{data.time}</Time>
-              <Title>{data.title}</Title>
-              {data.detail ?
-                <DetailContent>
-                  {data.detail.split('\n').map((line, index) => (
-                    <DetailLine key={index}>{line}</DetailLine>
-                  ))}
-                </DetailContent>
-                : null
-              }
-            </div>
-            : <Title>No Plan</Title>
-        }
-      </PopupContent>
-    </PopupOverlay>
+    <Modal
+      open={showPopup}
+      onClose={closePopup}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      {data ?
+        data.detail ?
+          <AnnouncementPopup>
+            <Time>{selectedTime}</Time>
+            <Title>{data.title}</Title>
+            {data.detail ?
+              <DetailContent>
+                {
+                  data.detail.split('\n').map((line, index) => (
+                    <p key={index}>{line}</p>
+                  ))
+                }
+              </DetailContent>
+              : null
+            }
+          </AnnouncementPopup>
+          : <PlanPopup>
+            <Time>{selectedTime}</Time>
+            <Title>{data.title}</Title>
+            <Button style={{ marginBottom: '10px' }} variant="outlined">+</Button>
+          </PlanPopup>
+        : <PlanPopup>
+          <Time>{selectedTime}</Time>
+          <Title>No Plan</Title>
+          <Button style={{ marginBottom: '10px' }} variant="outlined">+</Button>
+        </PlanPopup>
+      }
+    </Modal>
   )
 }
 
-const PopupOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const PopupContent = styled.div`
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: left;
-  position: relative;
-  max-width: 80%;
-  max-height: 80%;
-  overflow-y: auto;
-`;
-
-const CloseButton = styled.button`
+const PopupContainer = styled(Box)`
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-`;
+  border-radius: 10%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 2px solid #000;
+`
+
+const AnnouncementPopup = styled(PopupContainer)`
+  width: 80%;
+  height: auto;
+`
+
+const PlanPopup = styled(PopupContainer)`
+  border-radius: 20%;
+  width: 80%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
 
 const Time = styled.p`
   color: #666;
   font-size: 0.9rem;
-  margin-bottom: 0px;
+  margin: 0px;
+  padding: 20px 0px 0px 0px;
 `;
 
 const Title = styled.h2`
-  margin-bottom: 20px;
+  padding: 0px 0px 0px 10px;
 `;
 
 const DetailContent = styled.div`
-  padding: 0px;
-`;
-
-const DetailLine = styled.p`
-  margin: 0px 0;
+  padding: 0px 0px 0px 10px;
 `;

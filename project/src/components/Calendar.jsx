@@ -17,6 +17,7 @@ export const theme = {
 export default function CalendarComponent() {
   const [showPopup, setShowPopup] = useState(false);
   const [data, setData] = useState([]);
+  const [selectedTime, setSelectedTime] = useState(null);
   const [selectedData, setSelectedData] = useState(null);
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export default function CalendarComponent() {
 
   const onChange = (date) => {
     const formattedDate = date.format('YYYY-MM-DD');
+    setSelectedTime(formattedDate);
     const selected = data.find((item) => item.time === formattedDate);
     setSelectedData(selected);
     setShowPopup(true);
@@ -75,8 +77,10 @@ export default function CalendarComponent() {
         </LocalizationProvider>
         {showPopup && (
           <Popup
-            data={selectedData}
             closePopup={closePopup}
+            data={selectedData}
+            showPopup={showPopup}
+            selectedTime={selectedTime}
           />
         )}
       </CalendarContainer>

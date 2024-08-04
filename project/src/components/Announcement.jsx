@@ -63,7 +63,7 @@ export default function Announcement() {
         </AnnouncementItem>
       ))}
       {showPopup && (
-        <Popup closePopup={closePopup} data={selectedData} />
+        <Popup closePopup={closePopup} data={selectedData} showPopup={showPopup} />
       )}
     </AnnouncementContainer>
   );
@@ -89,6 +89,10 @@ const AnnouncementItem = styled.div`
   width: 90%;
   height: 80px;
   margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ItemTitle = styled.h3`
@@ -97,7 +101,7 @@ const ItemTitle = styled.h3`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 90%;
-  padding-top: 10px;
+  margin-top: 10px;
   padding-left: 3%;
   height: 40%;
 `;

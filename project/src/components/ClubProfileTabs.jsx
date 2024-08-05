@@ -16,7 +16,7 @@ const CustomTabPanel = (props) => {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <ScrollableBox><Box sx={{ p: 3 }}>{children}</Box></ScrollableBox>}
     </div>
   );
 }
@@ -102,7 +102,6 @@ const ClubProfileTaps = () => {
 const TabSectionContainer = styled.div`
   width: 340px;
   height: 560px;
-  overflow-y: auto;
   background-color: rgba(255, 255, 255, 0.6);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 15px;
@@ -116,6 +115,11 @@ const TabSectionContainer = styled.div`
       font-size: 14px;
     }
   }
+`;
+
+const ScrollableBox = styled(Box)`
+  height: 485px;
+  overflow-y: auto;
 `;
 
 const TabButton = styled(Tab)`

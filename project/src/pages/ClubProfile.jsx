@@ -1,31 +1,115 @@
 import React from 'react';
-import { Avatar, Box, Grid, Container } from '@mui/material';
+import styled from 'styled-components';
+import Layout from '../components/Layout';
+import ClubProfileTabs from '../components/ClubProfileTabs';
 
-export default function ClubProfile() {
+const ClubProfile = () => {
   return (
-    <Container sx={{ width: '100%', maxWidth: '100%', padding: 0 }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 100, height: 100 }}>
-        {/* 상단 영역 */}
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <Avatar alt="Profile" src="/static/images/avatar.jpg" sx={{ width: 100, height: 100 }} />
-          <Box sx={{ ml: 2 }}>
-            <div style={{ fontSize: '18px', fontWeight: 'bold' }}>ClubName</div>
-            <div style={{ fontSize: '14px' }}>ActivityField</div>
-            <div style={{ fontSize: '12px' }}>clubDescription</div>
-            <div style={{ fontSize: '12px' }}>ExpectActivity</div>
-          </Box>
-        </Box>
-
-        {/* 하단 영역 */}
-        <Box sx={{ width: '100%', height: 500 }}>
-          <Grid container spacing={10}>
-            <Grid item xs={200}>
-              <Box sx={{ height: '100%', border: '1px solid gray' }} />
-            </Grid>
-            {/* 나머지 작은 박스들도 동일하게 추가 */}
-          </Grid>
-        </Box>
-      </Box>
-    </Container>
+    <Layout>
+      <ProfileContainer>
+        <TopArea>
+            <ProfilePic />
+            <ClubInfoContainer>
+              <ClubInfoTop>
+                <ClubName>썬시아</ClubName>
+                <Category>예술</Category>
+              </ClubInfoTop>
+              <ClubInfoBottom>
+                <ClubDescription>순천향대학교 대표 치어리딩 동아리</ClubDescription>
+                <ClubActivities>예상활동: 치어리딩, 축제 공연</ClubActivities>
+              </ClubInfoBottom>
+            </ClubInfoContainer>
+        </TopArea>
+        <Tabs />
+      </ProfileContainer>
+    </Layout>
   );
 }
+
+const ProfileContainer = styled.div`
+  width: 393px;
+  height: 800px;
+  position: fixed;
+  top: 60px;
+`;
+
+const TopArea = styled.div`
+  width: 340px;
+  height: 180px;
+  position: relative;
+  top: 10px;
+  margin: auto;
+`;
+
+const ProfilePic = styled.img`
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
+  background-color: #D9D9D9;
+  display: block;
+  position: relative;
+  top: 20px;
+`;
+
+const ClubInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ClubInfoTop = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  position: absolute;
+  top: 30px;
+  left: 150px;
+`;
+
+const ClubInfoBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 182px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  position: absolute;
+  top: 60px;
+  left: 154px;
+`;
+
+const ClubName = styled.div`
+  font-size: 20px;
+  margin-left: 5px;
+`;
+
+const Category = styled.div`
+  font-size: 14px;
+  margin-top: 1px;
+  margin-left: 5px;
+  color: #666;
+`;
+
+const ClubDescription = styled.div`
+  font-size: 12px;
+  margin-top: 10px;
+  text-align: left;
+`;
+
+const ClubActivities = styled.div`
+  font-size: 12px;
+  margin-top: 10px;
+  text-align: left;
+`;
+
+const Tabs = styled(ClubProfileTabs)`
+  width: 340px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+`;
+
+export default ClubProfile;

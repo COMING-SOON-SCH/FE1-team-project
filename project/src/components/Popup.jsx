@@ -3,7 +3,6 @@ import React from 'react';
 import styled from "styled-components";
 
 export default function Popup({ closePopup, data, showPopup, selectedTime }) {
-  console.log(selectedTime)
   return (
     <Modal
       open={showPopup}
@@ -29,7 +28,7 @@ export default function Popup({ closePopup, data, showPopup, selectedTime }) {
           </AnnouncementPopup>
           : <PlanPopup>
             <Time>{selectedTime}</Time>
-            <Title>{data.title}</Title>
+            <Title>{data.plans}</Title>
             <Button style={{ marginBottom: '10px' }} variant="outlined">+</Button>
           </PlanPopup>
         : <PlanPopup>

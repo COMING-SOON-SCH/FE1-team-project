@@ -1,44 +1,27 @@
 import { useEffect, useState } from "react";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import 'react-calendar/dist/Calendar.css'
 import Popup from "./Popup";
 import { DateCalendar, LocalizationProvider, PickersDay } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-
-export const theme = {
-  color: {
-    pink: '#FFC0CB',
-    brown: '#A52A2A',
-    blue: '#0000FF',
-    lime: '#00FF00'
-  }
-};
+import useGetAllPlan from "../hooks/useGetAllPlan";
+import dayjs from "dayjs";
 
 export default function CalendarComponent() {
   const [showPopup, setShowPopup] = useState(false);
-  const [data, setData] = useState([]);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedData, setSelectedData] = useState(null);
+  const { allPlan, getAllPlan, isError } = useGetAllPlan();
 
   useEffect(() => {
-    setData([
-      {
-        key: '1',
-        title: '공식 과제 제출일',
-        time: '2024-07-11'
-      },
-      {
-        key: '2',
-        title: '프로젝트 팀 미팅',
-        time: '2024-07-16'
-      }
-    ])
+    getAllPlan();
   }, [])
 
   const onChange = (date) => {
     const formattedDate = date.format('YYYY-MM-DD');
     setSelectedTime(formattedDate);
-    const selected = data.find((item) => item.time === formattedDate);
+    const selected = allPlan.find((item) => dayjs(item.date.toDate()).format('YYYY-MM-DD') === formattedDate);
+    console.log(selected)
     setSelectedData(selected);
     setShowPopup(true);
   }
@@ -50,7 +33,7 @@ export default function CalendarComponent() {
   const ServerDay = (props) => {
     const { day, outsideCurrentMonth, ...other } = props;
     const formattedDate = day.format('YYYY-MM-DD');
-    const isSelected = data.some(item => item.time === formattedDate);
+    const isSelected = allPlan.some(item => dayjs(item.date.toDate()).format('YYYY-MM-DD') === formattedDate);
 
     return (
       <PickersDay
@@ -64,27 +47,29 @@ export default function CalendarComponent() {
     );
   }
 
+  if (isError) {
+    console.log('데이터 불러오는 도중 오류 발생')
+  }
+
   return (
-    <ThemeProvider theme={theme}>
-      <CalendarContainer>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateCalendar
-            onChange={onChange}
-            slots={{
-              day: ServerDay
-            }}
-          />
-        </LocalizationProvider>
-        {showPopup && (
-          <Popup
-            closePopup={closePopup}
-            data={selectedData}
-            showPopup={showPopup}
-            selectedTime={selectedTime}
-          />
-        )}
-      </CalendarContainer>
-    </ThemeProvider>
+    <CalendarContainer>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DateCalendar
+          onChange={onChange}
+          slots={{
+            day: ServerDay
+          }}
+        />
+      </LocalizationProvider>
+      {showPopup && (
+        <Popup
+          closePopup={closePopup}
+          data={selectedData}
+          showPopup={showPopup}
+          selectedTime={selectedTime}
+        />
+      )}
+    </CalendarContainer>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSignIn from "../hooks/useSignIn";
 import styled, { createGlobalStyle } from 'styled-components';
@@ -8,14 +8,13 @@ import BackButton from '../components/BackButton';
 import Layout from '../components/Layout';
 
 const OutlinedTextField = ({ id, setId, pw, setPw }) => {
-
   const handleIdChange = (event) => {
     setId(event.target.value);
-  }
+  };
 
   const handlePasswordChange = (event) => {
     setPw(event.target.value);
-  }
+  };
 
   return (
     <>
@@ -38,7 +37,7 @@ const OutlinedTextField = ({ id, setId, pw, setPw }) => {
       </div>
     </>
   );
-}
+};
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -46,24 +45,17 @@ const SignIn = () => {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const { signIn, passwords, isError } = useSignIn();
-  const isSubmitted = useRef(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    isSubmitted.current = true;
     await signIn(id);
-  };
 
-  useEffect(() => {
-    if (isSubmitted.current) {
-      if (passwords.length > 0 && passwords.includes(pw)) {
-        navigate('/main');
-      } else {
-        alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-      }
-      isSubmitted.current = false;
+    if (passwords.length > 0 && passwords.includes(pw)) {
+      navigate('/main');
+    } else {
+      alert('아이디 또는 비밀번호가 일치하지 않습니다.');
     }
-  }, [passwords, pw, navigate]);
+  };
 
   const onClickForgotPassword = () => {
     alert("미지원 기능입니다.");
@@ -74,11 +66,11 @@ const SignIn = () => {
       <SignInStyle />
       <Layout>
         <BackButton />
-        <FormContainer>
+        <FormContainer onSubmit={handleSubmit}>
           <OutlinedTextField id={id} setId={setId} pw={pw} setPw={setPw} />
+          {isError && <p>오류가 발생했습니다. 다시 시도해주세요.</p>}
+          <Button className="btn sign-in" type="submit">로그인</Button>
         </FormContainer>
-        {isError && <p>오류가 발생했습니다. 다시 시도해주세요.</p>}
-        <Button className="btn sign-in" type="submit" onClick={handleSubmit}>로그인</Button>
         <div className="forgot-password" onClick={onClickForgotPassword}>
           비밀번호를 잊으셨나요?
         </div>

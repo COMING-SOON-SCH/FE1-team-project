@@ -5,34 +5,22 @@ import FilterButton from '../components/FilterButton';
 import ContentContainer from '../components/ContentContainer';
 import SearchItemContainer from '../components/SearchItemContainer';
 import Layout from '../components/Layout';
-import SearchClubModal from '../components/SearchClubModal';
 
 const SearchClub = () => {
-  const [showModal, setShowModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleSearch = (term) => {
+    setSearchTerm(term);
   };
 
   return (
     <Layout>
       <SideBarButton />
-      <SearchBar />
+      <SearchBar onSearch={handleSearch} />
       <FilterButton />
       <ContentContainer>
-        <div onClick={handleOpenModal}>
-          <SearchItemContainer />
-        </div>
-        <div onClick={handleOpenModal}>
-          <SearchItemContainer />
-        </div>
+        <SearchItemContainer searchTerm={searchTerm} />
       </ContentContainer>
-      <SearchClubModal show={showModal} handleClose={handleCloseModal}>
-      </SearchClubModal>
     </Layout>
   );
 };

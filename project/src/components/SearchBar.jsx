@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 const SearchBox = styled(Paper)`
   && {
@@ -19,7 +20,7 @@ const SearchBox = styled(Paper)`
   }
 `;
 
-const SearchInput = styled(InputBase)`
+const SearchInput = styled(TextField)`
   && {
     font-family: 'MangoDdobak-B';
     margin-left: 8px;
@@ -31,18 +32,43 @@ const SearchButton = styled(IconButton)`
   padding: 10px;
 `;
 
-const SearchBar = () => {
+const clubs = [
+  { ClubName: "썬시아" },
+  { ClubName: "커밍순" },
+  { ClubName: "리버티노" },
+];
+
+const SearchBar = ({ onSearch }) => {
+  const [inputValue, setInputValue] = useState('');
+
+  const handleSearchClick = () => {
+    onSearch(inputValue);
+  };
+
   return (
-    <SearchBox component="form">
-      <SearchInput
-      placeholder="동아리 찾기"
-      inputProps={{ 'aria-label': 'search clubs' }}
+    <SearchBox component="form" onSubmit={e => e.preventDefault()}>
+      <Autocomplete
+        freeSolo
+        id="combo-box"
+        options={clubs.map((club) => club.ClubName)}
+        inputValue={inputValue}
+        onInputChange={(event, newInputValue) => {
+          setInputValue(newInputValue);
+        }}
+        renderInput={(params) => (
+          <SearchInput
+            {...params}
+            variant="outlined"
+            placeholder="동아리 찾기"
+            inputProps={{ ...params.inputProps, 'aria-label': 'search clubs' }}
+          />
+        )}
       />
-      <SearchButton type="button" aria-label="search">
-      <SearchIcon />
+      <SearchButton type="button" aria-label="search" onClick={handleSearchClick}>
+        <SearchIcon />
       </SearchButton>
     </SearchBox>
   );
 };
-  
+
 export default SearchBar;

@@ -3,6 +3,7 @@ import { Button, IconButton, Avatar, Container, Stack } from '@mui/material';
 import OptionsIcon from '@mui/icons-material/Settings';
 import { PasswordField, SignupTextField } from '../components/SignupTextField';
 import styled from 'styled-components';
+// import usePostUser from '../hooks/usePostUser';
 
 export function MyhomePage() {
   const [name, setName] = useState('comingsoon');
@@ -10,6 +11,14 @@ export function MyhomePage() {
   const [password, setPassword] = useState('비밀번호');
   const [currentPassword, setCurrentPassword] = useState('비밀번호');  
   const [showPasswordChange, setShowPasswordChange] = useState(false);
+  // const {userData, setUserData} = useState({
+  //   name: 'comingsoon',
+  //   id: '아이디',
+  //   password: '비밀번호',
+  //   currentPassword: '비밀번호',
+  //   showPasswordChange: false,
+
+  // })
 
   const handlePasswordChangeClick = () => {
     setShowPasswordChange(true);

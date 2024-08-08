@@ -201,8 +201,8 @@ const ScrollableBox = styled(Box)`
 
 const TabButton = styled(Tab)`
   && {
-  width: 33.33%;
-  font-family: 'MangoDdobak-B';
+    width: 33.33%;
+    font-family: 'MangoDdobak-B';
   }
 `;
 
@@ -220,7 +220,7 @@ const PhotosGrid = styled.div`
 
 const Photo = styled.img`
   width: 100%;
-  height: 150px;
+  height: 145px;
   border-radius: 8px;
 `;
 
@@ -239,6 +239,19 @@ const Post = styled.div`
   height: 80px;
   border-radius: 8px;
   background-color: #D9D9D9;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PostTitle = styled.div`
+  margin: 22px auto 0px 20px;
+  font-size: 14px;
+`;
+
+const PostingTime = styled.div`
+  margin: 10px auto 0px 20px;
+  color: #666;
+  font-size: 12px;
 `;
 
 export default ClubProfileTabs;

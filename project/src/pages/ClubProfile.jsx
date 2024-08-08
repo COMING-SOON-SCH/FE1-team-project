@@ -140,10 +140,4 @@ const ClubActivitiesText = styled.div`
   text-align: left;
 `;
 
-const Tabs = styled(ClubProfileTabs)`
-  width: 340px;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-`;
-
 export default ClubProfile;

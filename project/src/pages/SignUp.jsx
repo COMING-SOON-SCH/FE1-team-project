@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { SignupTextField, PasswordField, SearchField } from '../components/SignupTextField';
-import { Button, Stack, Grid, IconButton } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Button, Stack, Grid } from '@mui/material';
 import CopyRight from '../components/CopyRight';
 
+
 const SignUp = () => {
-  const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     id: '',
     password: '',
@@ -33,9 +31,6 @@ const SignUp = () => {
       setConfirmPasswordError(false);
     }
   }, [formValues.confirmPassword, formValues.password]);
-  const handleBackClick = () => {
-    navigate('/');
-  };
 
   const handleSignupClick = (e) => { 
     e.preventDefault();
@@ -54,15 +49,12 @@ const SignUp = () => {
 
   return (
     <div style={BackGround}>
-      <IconButton onClick={handleBackClick} style={{ position: 'absolute', top: 16, left: 16 }}>
-        <ArrowBackIcon />
-      </IconButton>
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={6} sm={2} container direction="column" alignItems="center">
-          <SignupTextField texttype={'id'} value={formValues.id} onChange={handleInputChange} fullWidth />
-          <PasswordField texttype={'password'} value={formValues.password} onChange={handleInputChange} fullWidth />
-          <PasswordField texttype={'confirmPassword'} value={formValues.confirmPassword} onChange={handleInputChange} fullWidth error={confirmPasswordError} helperText={confirmPasswordError ? '비밀번호가 일치하지 않습니다  ' : ''} />
-          <SearchField texttype={'university'} value={formValues.university} onChange={handleInputChange} fullWidth  />
+          <SignupTextField texttype={'id'} fieldname={'아이디'} value={formValues.id} onChange={handleInputChange} fullWidth />
+          <PasswordField texttype={'password'} fieldname={'비밀번호'} value={formValues.password} onChange={handleInputChange} fullWidth />
+          <PasswordField texttype={'confirmPassword'} fieldname={'비밀번호 확인'} value={formValues.confirmPassword} onChange={handleInputChange} fullWidth error={confirmPasswordError} helperText={confirmPasswordError ? '비밀번호가 일치하지 않습니다  ' : ''} />
+          <SearchField texttype={'university'} fieldname={'대학교 검색'} value={formValues.university} onChange={handleInputChange} fullWidth  />
           <Stack spacing={2} direction="row" justifyContent="center" marginTop={2}>
             <Button variant="contained" onClick={handleSignupClick}>회원가입</Button>
           </Stack>
@@ -71,7 +63,12 @@ const SignUp = () => {
       </Grid>
     </div>
   );
+  
 }
+
+
+
+
 const BackGround = {
   display: 'flex',
   justifyContent: 'center',

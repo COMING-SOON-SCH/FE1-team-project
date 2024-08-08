@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './index.css'
 import Main from './pages/Main';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import ClubProfile from './pages/ClubProfile'; // 기본 내보내기로 임포트
 import MyhomePage from './pages/MyhomePage'; // 대소문자 일치
 import styled from 'styled-components';
@@ -18,11 +18,16 @@ import Home from './pages/Home'
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false)
 
+  const location = useLocation();
+  const hiddenSidebarPaths = ['/', '/signin', '/signup']; // 사이드바 버튼을 숨길 페이지
+
   return (
     <Background>
-      <SidebarButton onClick={() => setIsSidebarOpen(true)} >
-        <ButtonImage src={sidebarpicture} alt='button' />
-      </SidebarButton>
+      {!hiddenSidebarPaths.includes(location.pathname) && (
+        <SidebarButton onClick={() => setIsSidebarOpen(true)} >
+          <ButtonImage src={sidebarpicture} alt='button' />
+        </SidebarButton>
+      )}
       <Drawer
         open={isSidebarOpen}
         onClose={() => setIsSidebarOpen(!isSidebarOpen)}

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SearchItem from '../components/SearchItem';
+import SearchClubModal from '../components/SearchClubModal';
+import club1 from '../assets/club-img-1.jpg';
 
 const Container = styled.div`
   width: 300px;
@@ -10,8 +12,8 @@ const Container = styled.div`
 `;
 
 const SearchItemContainer = ({ searchTerm }) => {
-
-  // 동아리 글
+  const [showModal, setShowModal] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
   const promotionPosts = [
@@ -49,6 +51,15 @@ const SearchItemContainer = ({ searchTerm }) => {
       setFilteredPosts(promotionPosts);
     }
   }, [searchTerm]);
+
+  const handleOpenModal = (clubName) => {
+    const post = promotionPosts.find(post => post.clubName === clubName);
+    setModalContent(post);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -63,6 +74,16 @@ const SearchItemContainer = ({ searchTerm }) => {
           />
         </Container>
       ))}
+      {modalContent && (
+        <SearchClubModal
+          show={showModal}
+          handleClose={handleCloseModal}
+          title={modalContent.title}
+          clubName={modalContent.clubName}
+          img={modalContent.image}
+          description={modalContent.modalDescription}
+        />
+      )}
     </>
   );
 };

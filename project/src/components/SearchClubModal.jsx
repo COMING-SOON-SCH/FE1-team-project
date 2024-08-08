@@ -1,9 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
-//import Carousel from 'react-material-ui-carousel';
 
-const SearchClubModal = ({ show, handleClose, children }) => {
+const SearchClubModal = ({ show, handleClose, title, clubName, img, description }) => {
   const showHideClassName = show ? "display-block" : "display-none";
 
   return (
@@ -14,12 +13,13 @@ const SearchClubModal = ({ show, handleClose, children }) => {
           <CloseButton onClick={handleClose}>
             <CloseIcon />
           </CloseButton>
-          <Title>썬시아 상반기 모집!</Title>
-          <Subtitle>썬시아</Subtitle>
-          <ImagePlaceholder>이미지</ImagePlaceholder>
-          <Description>이다혜가 꿈인 사람들을 위한 동아리입니다.</Description>
+          <Title>{title}</Title>
+          <ClubName>{clubName}</ClubName>
+          <ImagePlaceholder>
+            <img src={img} />
+          </ImagePlaceholder>
+          <Description>{description}</Description>
           <ApplyButton>신청</ApplyButton>
-          {children}
         </ModalMain>
       </StyledModal>
     </>
@@ -89,7 +89,7 @@ const Title = styled.div`
   margin-top: 20px;
 `;
 
-const Subtitle = styled.div`
+const ClubName = styled.div`
   font-size: 14px;
   color: #666;
   margin-top: 10px;

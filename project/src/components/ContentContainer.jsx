@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const ContentContainer = styled.div`
   width: 340px;
-  height: 75%;
+  height: 640px;
   background-color: rgba(255, 255, 255, 0.6);
   border-radius: 15px;
   position: fixed;
@@ -12,7 +12,7 @@ const ContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 30px 0px;
+  overflow-y: auto;
 `;
 
 export default ContentContainer;

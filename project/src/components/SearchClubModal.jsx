@@ -71,6 +71,9 @@ const ModalMain = styled.section`
   padding: 20px;
   border-radius: 8px;
   max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 const CloseButton = styled.button`
@@ -104,6 +107,11 @@ const ImagePlaceholder = styled.div`
   justify-content: center;
   align-items: center;
   color: #777;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const Description = styled.div`

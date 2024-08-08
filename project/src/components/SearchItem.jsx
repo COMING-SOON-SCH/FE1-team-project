@@ -50,6 +50,7 @@ const Description = styled.div`
   font-size: 18px;
   margin-top: 5px;
   margin-left: 5px;
+  margin-bottom: 5px;
 `;
 
 const SearchItem = ({ image, clubName, category, description }) => (

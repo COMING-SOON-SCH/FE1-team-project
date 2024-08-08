@@ -24,12 +24,28 @@ const SearchInput = styled(TextField)`
   && {
     font-family: 'MangoDdobak-B';
     margin-left: 8px;
+    width: 280px;
     flex: 1;
+
+    .MuiInputBase-root {
+      padding: 0;
+    }
+
+    .MuiOutlinedInput-notchedOutline {
+      border: none;
+    }
+
+    .MuiInputBase-input {
+      font-family: 'MangoDdobak-B';
+    }
   }
 `;
 
 const SearchButton = styled(IconButton)`
-  padding: 10px;
+  && {
+    padding: 10px;
+    margin-left: auto;
+  }
 `;
 
 const clubs = [

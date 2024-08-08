@@ -9,6 +9,9 @@ const Container = styled.div`
   height: 260px;
   background: #D9D9D9;
   border-radius: 10px;
+  position: relative;
+  top: 132px;
+  margin-top: 40px;
 `;
 
 const SearchItemContainer = ({ searchTerm }) => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import 'react-calendar/dist/Calendar.css'
-import Popup from "./Popup";
+import PlanPopup from "./PlanPopup";
 import { DateCalendar, LocalizationProvider, PickersDay } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import useGetAllPlan from "../hooks/useGetAllPlan";
@@ -15,12 +15,12 @@ export default function CalendarComponent() {
 
   useEffect(() => {
     getAllPlan();
-  }, [])
+  }, [selectedData])
 
   const onChange = (date) => {
     const formattedDate = date.format('YYYY-MM-DD');
     setSelectedTime(formattedDate);
-    const selected = allPlan.find((item) => dayjs(item.date.toDate()).format('YYYY-MM-DD') === formattedDate);
+    const selected = allPlan.filter((item) => dayjs(item.date.toDate()).format('YYYY-MM-DD') === formattedDate);
     console.log(selected)
     setSelectedData(selected);
     setShowPopup(true);
@@ -62,9 +62,10 @@ export default function CalendarComponent() {
         />
       </LocalizationProvider>
       {showPopup && (
-        <Popup
+        <PlanPopup
           closePopup={closePopup}
           data={selectedData}
+          setData={setSelectedData}
           showPopup={showPopup}
           selectedTime={selectedTime}
         />

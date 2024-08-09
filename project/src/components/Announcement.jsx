@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Popup from "./Popup";
+import AnnouncementPopup from "./AnnouncementPopup";
 
 export default function Announcement() {
   const [data, setdata] = useState([]);
@@ -63,7 +63,7 @@ export default function Announcement() {
         </AnnouncementItem>
       ))}
       {showPopup && (
-        <Popup closePopup={closePopup} data={selectedData} showPopup={showPopup} />
+        <AnnouncementPopup closePopup={closePopup} data={selectedData} showPopup={showPopup} />
       )}
     </AnnouncementContainer>
   );

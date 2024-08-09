@@ -65,7 +65,6 @@ export default function CalendarComponent() {
         <PlanPopup
           closePopup={closePopup}
           data={selectedData}
-          setData={setSelectedData}
           showPopup={showPopup}
           selectedTime={selectedTime}
         />

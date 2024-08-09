@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import styled, { keyframes } from "styled-components";
 import usePostPlan from '../hooks/usePostPlan';
 
-export default function PlanPopup({ closePopup, data, setData, showPopup, selectedTime }) {
+export default function PlanPopup({ closePopup, data, showPopup, selectedTime }) {
   const [isClicked, setIsClicked] = useState(false);
   const [planToAdd, setPlanToAdd] = useState("");
   const { postPlan, isError } = usePostPlan()

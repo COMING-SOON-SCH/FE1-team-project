@@ -109,6 +109,7 @@ const SignInStyle = createGlobalStyle`
   }
 
   .btn {
+    margin-top: 25px;
     font-family: 'MangoDdobak-B';
   }
 `;

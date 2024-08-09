@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { SignupTextField, PasswordField, SearchField } from '../components/SignupTextField';
 import { Button, Stack, Grid } from '@mui/material';
 import CopyRight from '../components/CopyRight';
+import usePostUser from '../hooks/usePostUser';
 
 
 const SignUp = () => {
   const [formValues, setFormValues] = useState({
+    nickname:'',
     id: '',
     password: '',
     confirmPassword: '',
@@ -32,7 +34,9 @@ const SignUp = () => {
     }
   }, [formValues.confirmPassword, formValues.password]);
 
-  const handleSignupClick = (e) => { 
+  const { postUser, isError } = usePostUser();
+
+  const handleSignupClick = async(e) => { 
     e.preventDefault();
     const { id, password, confirmPassword, university } = formValues;
   
@@ -45,13 +49,25 @@ const SignUp = () => {
       alert('비밀번호가 다릅니다.');
     }
     (console.log('id = ',id,'\n password = ',password, '\nconfirmpassword = ',confirmPassword, '\nuniversity = ',university));
+    if (!isError) { 
+      try {
+        await postUser(formValues);
+        console.log('회원가입 완료');
+      } catch (error) {
+        console.error('회원가입 실패', error);
+      }
+    } else {
+      alert('회원가입 실패');
+    }
   };
+
 
   return (
     <div style={BackGround}>
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={6} sm={2} container direction="column" alignItems="center">
           <SignupTextField texttype={'id'} fieldname={'아이디'} value={formValues.id} onChange={handleInputChange} fullWidth />
+          <SignupTextField texttype={'nickname'} fieldname={'닉네임'} value={formValues.nickname} onChange={handleInputChange} fullWidth />
           <PasswordField texttype={'password'} fieldname={'비밀번호'} value={formValues.password} onChange={handleInputChange} fullWidth />
           <PasswordField texttype={'confirmPassword'} fieldname={'비밀번호 확인'} value={formValues.confirmPassword} onChange={handleInputChange} fullWidth error={confirmPasswordError} helperText={confirmPasswordError ? '비밀번호가 일치하지 않습니다  ' : ''} />
           <SearchField texttype={'university'} fieldname={'대학교 검색'} value={formValues.university} onChange={handleInputChange} fullWidth  />

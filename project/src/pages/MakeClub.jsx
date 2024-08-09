@@ -6,12 +6,17 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { Button } from '@mui/material';
 
 export default function MakeClub() {
   const [category, setCategory] = React.useState('')
   const [clubName, setClubName] = React.useState('')
   const [introduction, setIntroduction] = React.useState('')
   const [activity, setActivity] = React.useState('')
+
+  const makeHandler = () => {
+    //만들기 기능 구현
+  }
 
   return (
     <MakeClubContainer>
@@ -62,6 +67,7 @@ export default function MakeClub() {
           <TextField label="예상 활동" value={activity} onChange={(e) => setActivity(e.target.value)} />
         </StyledFormControl>
       </MakeClubBox>
+      <MakeButton variant="outlined" onClick={makeHandler}>만들기</MakeButton>
     </MakeClubContainer>
   );
 }
@@ -89,3 +95,9 @@ const StyledFormControl = styled(FormControl)`
     background: white;
   }
 `;
+
+const MakeButton = styled(Button)`
+  && {
+    margin: 20px;
+  }
+`

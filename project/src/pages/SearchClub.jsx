@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import SideBarButton from '../components/SideBarButton';
 import SearchBar from '../components/SearchBar';
 import FilterButton from '../components/FilterButton';
 import ContentContainer from '../components/ContentContainer';
@@ -15,7 +14,6 @@ const SearchClub = () => {
 
   return (
     <Layout>
-      <SideBarButton />
       <SearchBar onSearch={handleSearch} />
       <FilterButton />
       <ContentContainer>

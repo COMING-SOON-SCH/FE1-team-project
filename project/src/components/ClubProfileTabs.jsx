@@ -189,6 +189,10 @@ const TabButton = styled(Tab)`
   }
 `;
 
+const IntroductionSection = styled.div`
+  margin-bottom: 15px;
+`;
+
 const RecentPhotosSection = styled.div`
   margin: 0 auto;
   padding: 0;
@@ -199,12 +203,14 @@ const PhotosGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
+  margin-bottom: 15px;
 `;
 
 const Photo = styled.img`
   width: 100%;
   height: 145px;
   border-radius: 8px;
+  cursor: pointer;
 `;
 
 const PostBoard = styled.div`
@@ -214,16 +220,19 @@ const PostBoard = styled.div`
   margin: auto;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
+  margin-bottom: 15px;
+  align-items: center;
 `;
 
 const Post = styled.div`
-  width: 280px;
+  width: 300px;
   height: 80px;
   border-radius: 8px;
   background-color: #D9D9D9;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 `;
 
 const PostTitle = styled.div`

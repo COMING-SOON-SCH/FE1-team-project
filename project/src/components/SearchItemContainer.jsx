@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SearchItem from '../components/SearchItem';
 import SearchClubModal from '../components/SearchClubModal';
-import club1 from '../assets/club-img-1.jpg';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
 
 const Container = styled.div`
   width: 300px;
@@ -14,46 +15,34 @@ const Container = styled.div`
 const SearchItemContainer = ({ searchTerm }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
+  const [allPosts, setAllPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
-  const promotionPosts = [
-    {
-      image: club1,
-      clubName: '동아리',
-      category: '분야',
-      title: '제목',
-      modalDescription: '설명'
-    },
-    {
-      image: club1,
-      clubName: '썬시아',
-      category: '예술',
-      title: '썬시아 상반기 모집!',
-      modalDescription: '이다혜가 꿈인 사람들을 위한 동아리입니다.'
-    },
-    {
-      image: club1,
-      clubName: '커밍순',
-      category: '코딩',
-      title: '커밍순 하반기 모집!',
-      modalDescription: '순천향대 IT 서비스 개발 동아리입니다.'
-    },
-  ];
+  useEffect(() => {
+    const fetchPromotionPosts = async () => {
+      const querySnapshot = await getDocs(collection(db, 'searchClubPosts'));
+      const posts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setAllPosts(posts);
+      setFilteredPosts(posts);
+    };
+
+    fetchPromotionPosts();
+  }, []);
 
   useEffect(() => {
     if (searchTerm) {
       setFilteredPosts(
-        promotionPosts.filter(post =>
+        allPosts.filter(post =>
           post.clubName.toLowerCase().includes(searchTerm.toLowerCase())
         )
       );
     } else {
-      setFilteredPosts(promotionPosts);
+      setFilteredPosts(allPosts);
     }
-  }, [searchTerm]);
+  }, [searchTerm, allPosts]);
 
   const handleOpenModal = (clubName) => {
-    const post = promotionPosts.find(post => post.clubName === clubName);
+    const post = filteredPosts.find(post => post.clubName === clubName);
     setModalContent(post);
     setShowModal(true);
   };

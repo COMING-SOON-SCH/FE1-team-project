@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
 
 const SearchBox = styled(Paper)`
   && {
@@ -48,14 +50,23 @@ const SearchButton = styled(IconButton)`
   }
 `;
 
-const clubs = [
-  { ClubName: "썬시아" },
-  { ClubName: "커밍순" },
-  { ClubName: "리버티노" },
-];
-
 const SearchBar = ({ onSearch }) => {
   const [inputValue, setInputValue] = useState('');
+  const [clubs, setClubs] = useState([]);
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'searchClubPosts'));
+        const clubNames = querySnapshot.docs.map(doc => doc.data().clubName);
+        setClubs(clubNames);
+      } catch (error) {
+        console.error('오류 발생: ', error);
+      }
+    };
+
+    fetchClubs();
+  }, []);
 
   const handleSearchClick = () => {
     onSearch(inputValue);
@@ -66,7 +77,7 @@ const SearchBar = ({ onSearch }) => {
       <Autocomplete
         freeSolo
         id="combo-box"
-        options={clubs.map((club) => club.ClubName)}
+        options={clubs}
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);

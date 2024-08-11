@@ -1,9 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
+import { useNavigate } from 'react-router-dom';
 
 const SearchClubModal = ({ show, handleClose, title, clubName, img, description }) => {
   const showHideClassName = show ? "display-block" : "display-none";
+  const navigate = useNavigate();
+
+  const handleClubNameClick = () => {
+    navigate(`/club-profile/${encodeURIComponent(clubName)}`);
+  };
 
   return (
     <>
@@ -14,7 +20,7 @@ const SearchClubModal = ({ show, handleClose, title, clubName, img, description 
             <CloseIcon />
           </CloseButton>
           <Title>{title}</Title>
-          <ClubName>{clubName}</ClubName>
+          <ClubName onClick={handleClubNameClick}>{clubName}</ClubName>
           <ImagePlaceholder>
             <img src={img} />
           </ImagePlaceholder>

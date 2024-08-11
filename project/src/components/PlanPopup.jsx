@@ -4,12 +4,14 @@ import React, { useState } from 'react';
 import styled, { keyframes } from "styled-components";
 import usePostPlan from '../hooks/usePostPlan';
 import useFetchPlanState from '../hooks/useFetchPlanState';
+import useDeletePlan from '../hooks/useDeletePlan';
 
-export default function PlanPopup({ closePopup, data, showPopup, selectedTime }) {
+export default function PlanPopup({ closePopup, data, showPopup, selectedTime, setData }) {
   const [isClicked, setIsClicked] = useState(false);
   const [planToAdd, setPlanToAdd] = useState("");
-  const { postPlan, isError } = usePostPlan()
-  const fetchPlanState = useFetchPlanState()
+  const { postPlan, isError } = usePostPlan();
+  const deletePlan = useDeletePlan();
+  const fetchPlanState = useFetchPlanState();
 
   const handleAddPlan = (e) => {
     if (planToAdd !== '') {
@@ -27,7 +29,7 @@ export default function PlanPopup({ closePopup, data, showPopup, selectedTime })
       }
 
       postPlan(planData);
-      data.push(planData);
+      setData(prevData => [...prevData, planData]);
       if (isError) alert('데이터베이스에 계획 추가 중 오류 발생');
     }
 
@@ -39,6 +41,15 @@ export default function PlanPopup({ closePopup, data, showPopup, selectedTime })
     plan.state = !plan.state;
     setPlanToAdd(prev => prev + 1)
     fetchPlanState(plan)
+  }
+
+  const handleDeletePlan = (plan) => {
+    // `plans` 속성을 기준으로 일치하는 요소의 인덱스 찾기
+    const updatedData = data.filter((item) => item.plans !== plan.plans);
+    // 인덱스가 존재하면 해당 인덱스의 요소 삭제
+    setData(updatedData);
+
+    deletePlan(plan)
   }
 
   return (
@@ -58,7 +69,10 @@ export default function PlanPopup({ closePopup, data, showPopup, selectedTime })
                   checked={plan.state}
                   onChange={() => handleCheckboxChange(plan)}
                 />
-                <Plan key={data.plans} complted={plan.state}>{plan.plans}</Plan>
+                <Plan key={data.plans} completed={plan.state}>{plan.plans}</Plan>
+                <DeleteButton onClick={() => handleDeletePlan(plan)}>
+                  <p>&times;</p>
+                </DeleteButton>
               </PlanContainer>
             ))
               : <PlanContainer>
@@ -122,7 +136,7 @@ const PlanContainer = styled.div`
 
 const Plan = styled.h2`
   margin: 0;
-  text-decoration: ${props => props.complted ? 'line-through' : 'none'};
+  text-decoration: ${props => props.completed ? 'line-through' : 'none'};
 `;
 
 const expandAnimation = keyframes`
@@ -169,3 +183,16 @@ const AddPlanButton = styled(Button)`
   height: 40px;
   width: 25%;
 `;
+
+const DeleteButton = styled.button`
+  background: none;
+  border: none;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+
+  p{
+    font-size: 24px;
+    margin: 0;
+  }
+`

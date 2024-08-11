@@ -6,6 +6,8 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
+import GalleryModal from './GalleryModal';
+import PostModal from './PostModal';
 
 const ClubProfileTabs = ({ clubName }) => {
   const [value, setValue] = useState(0);

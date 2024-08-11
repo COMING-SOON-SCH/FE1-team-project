@@ -8,18 +8,23 @@ import Layout from '../components/Layout';
 
 const SearchClub = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortType, setSortType] = useState('name'); // 기본값은 이름순
 
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
 
+  const handleSortChange = (type) => {
+    setSortType(type);
+  };
+
   return (
     <Layout>
       <SearchBar onSearch={handleSearch} />
-      <FilterButton />
+      <FilterButton onSortChange={handleSortChange} />
       <ContentContainer>
         <ContentBox>
-          <SearchItemContainer searchTerm={searchTerm} />
+          <SearchItemContainer searchTerm={searchTerm} sortType={sortType} />
         </ContentBox>
       </ContentContainer>
     </Layout>

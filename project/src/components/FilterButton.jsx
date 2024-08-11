@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -31,12 +31,27 @@ const SubMenu = styled(MenuItem)`
   }
 `;
 
-const FilterButton = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const FilterButton = ({ onSortChange }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [currentSort, setCurrentSort] = useState('이름순'); // 기본값은 이름순
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const handleMenuItemClick = (newSortType) => {
+    const sortLabel = {
+      latest: '최신순',
+      popular: '인기순',
+      name: '이름순',
+    }[newSortType] || '이름순';
+
+    setCurrentSort(sortLabel);
+    onSortChange(newSortType);
+    setAnchorEl(null);
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -44,35 +59,26 @@ const FilterButton = () => {
   return (
     <FilterButtonContainer>
       <OpenButton
-        id="demo-positioned-button"
         aria-controls={open ? 'demo-positioned-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        정렬
+        {currentSort}
       </OpenButton>
       <Menu
-        id="demo-positioned-menu"
-        aria-labelledby="demo-positioned-button"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
       >
-        <SubMenu onClick={handleClose}>최신순</SubMenu>
-        <SubMenu onClick={handleClose}>인기순</SubMenu>
-        <SubMenu onClick={handleClose}>이름순</SubMenu>
+        <SubMenu onClick={() => handleMenuItemClick('latest')}>최신순</SubMenu>
+        <SubMenu onClick={() => handleMenuItemClick('popular')}>인기순</SubMenu>
+        <SubMenu onClick={() => handleMenuItemClick('name')}>이름순</SubMenu>
       </Menu>
     </FilterButtonContainer>
   );
-}
+};
 
 export default FilterButton;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SearchItem from '../components/SearchItem';
 import SearchClubModal from '../components/SearchClubModal';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
 const Container = styled.div`
@@ -12,7 +12,7 @@ const Container = styled.div`
   border-radius: 10px;
 `;
 
-const SearchItemContainer = ({ searchTerm }) => {
+const SearchItemContainer = ({ searchTerm, sortType }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
   const [allPosts, setAllPosts] = useState([]);
@@ -30,21 +30,43 @@ const SearchItemContainer = ({ searchTerm }) => {
   }, []);
 
   useEffect(() => {
+    let sortedPosts = [...allPosts];
+
+    if (sortType === 'latest') {
+      sortedPosts.sort((a, b) => {
+        const timeA = new Date(a.timeStamp);
+        const timeB = new Date(b.timeStamp);
+        return timeB - timeA || a.clubName.localeCompare(b.clubName);
+      });
+    } else if (sortType === 'popular') {
+      sortedPosts.sort((a, b) => b.hits - a.hits || a.clubName.localeCompare(b.clubName));
+    } else {
+      sortedPosts.sort((a, b) => a.clubName.localeCompare(b.clubName));
+    }
+
     if (searchTerm) {
       setFilteredPosts(
-        allPosts.filter(post =>
+        sortedPosts.filter(post =>
           post.clubName.toLowerCase().includes(searchTerm.toLowerCase())
         )
       );
     } else {
-      setFilteredPosts(allPosts);
+      setFilteredPosts(sortedPosts);
     }
-  }, [searchTerm, allPosts]);
+  }, [searchTerm, sortType, allPosts]);
 
-  const handleOpenModal = (clubName) => {
+  const handleOpenModal = async (clubName) => {
     const post = filteredPosts.find(post => post.clubName === clubName);
-    setModalContent(post);
-    setShowModal(true);
+
+    if (post) {
+      const postRef = doc(db, 'searchClubPosts', post.id);
+      await updateDoc(postRef, {
+        hits: post.hits + 1
+      });
+
+      setModalContent({ ...post, hits: post.hits + 1 });
+      setShowModal(true);
+    }
   };
 
   const handleCloseModal = () => {

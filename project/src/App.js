@@ -41,7 +41,7 @@ function App() {
         <Route path='/main' element={<Main />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/clubprofile" element={<ClubProfile />} />
+        <Route path="/club-profile/:clubName" element={<ClubProfile />} />
         <Route path="/myhomepage" element={<MyhomePage />} />
         <Route path="/makeclub" element={<MakeClub />} />
         <Route path="/search-club" element={<SearchClub />} />

@@ -2,63 +2,88 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SearchItem from '../components/SearchItem';
 import SearchClubModal from '../components/SearchClubModal';
-import club1 from '../assets/club-img-1.jpg';
+import { collection, getDocs, doc, updateDoc, query, where } from 'firebase/firestore';
+import { db } from '../firebaseConfig';
 
 const Container = styled.div`
   width: 300px;
   height: 260px;
   background: #D9D9D9;
   border-radius: 10px;
-  position: relative;
-  top: 132px;
-  margin-top: 40px;
 `;
 
-const SearchItemContainer = ({ searchTerm }) => {
+const SearchItemContainer = ({ searchTerm, sortType }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null);
+  const [allPosts, setAllPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
 
-  const promotionPosts = [
-    {
-      image: club1,
-      clubName: '동아리',
-      category: '분야',
-      title: '제목',
-      modalDescription: '설명'
-    },
-    {
-      image: club1,
-      clubName: '썬시아',
-      category: '예술',
-      title: '썬시아 상반기 모집!',
-      modalDescription: '이다혜가 꿈인 사람들을 위한 동아리입니다.'
-    },
-    {
-      image: club1,
-      clubName: '커밍순',
-      category: '코딩',
-      title: '커밍순 하반기 모집!',
-      modalDescription: '순천향대 IT 서비스 개발 동아리입니다.'
-    },
-  ];
+  useEffect(() => {
+    const fetchPromotionPosts = async () => {
+      const clubsSnapshot = await getDocs(collection(db, 'clubProfiles'));
+      let posts = [];
+
+      for (const clubDoc of clubsSnapshot.docs) {
+        const clubData = clubDoc.data();
+        const postsSnapshot = await getDocs(collection(db, 'clubProfiles', clubDoc.id, 'posts'));
+
+        postsSnapshot.docs.forEach(postDoc => {
+          const postData = postDoc.data();
+          posts.push({
+            id: postDoc.id,
+            clubName: clubData.clubName,
+            category: clubData.category,
+            ...postData,
+            clubId: clubDoc.id,
+          });
+        });
+      }
+
+      setAllPosts(posts);
+      setFilteredPosts(posts);
+    };
+
+    fetchPromotionPosts();
+  }, []);
 
   useEffect(() => {
+    let sortedPosts = [...allPosts];
+  
+    if (sortType === 'latest') {
+      sortedPosts.sort((a, b) => {
+        const timeA = new Date(a.postingTime);
+        const timeB = new Date(b.postingTime);
+        return timeB - timeA || a.clubName.localeCompare(b.clubName);
+      });
+    } else if (sortType === 'popular') {
+      sortedPosts.sort((a, b) => b.hits - a.hits || a.clubName.localeCompare(b.clubName));
+    } else {
+      sortedPosts.sort((a, b) => a.clubName.localeCompare(b.clubName));
+    }
+  
     if (searchTerm) {
       setFilteredPosts(
-        promotionPosts.filter(post =>
+        sortedPosts.filter(post =>
           post.clubName.toLowerCase().includes(searchTerm.toLowerCase())
         )
       );
     } else {
-      setFilteredPosts(promotionPosts);
+      setFilteredPosts(sortedPosts);
     }
-  }, [searchTerm]);
+  }, [searchTerm, sortType, allPosts]);  
 
-  const handleOpenModal = (clubName) => {
-    const post = promotionPosts.find(post => post.clubName === clubName);
-    setModalContent(post);
-    setShowModal(true);
+  const handleOpenModal = async (clubName, postId, clubId) => {
+    const post = filteredPosts.find(post => post.id === postId && post.clubId === clubId);
+
+    if (post) {
+      const postRef = doc(db, 'clubProfiles', clubId, 'posts', postId);
+      await updateDoc(postRef, {
+        hits: post.hits + 1,
+      });
+
+      setModalContent({ ...post, hits: post.hits + 1 });
+      setShowModal(true);
+    }
   };
 
   const handleCloseModal = () => {
@@ -68,12 +93,12 @@ const SearchItemContainer = ({ searchTerm }) => {
   return (
     <>
       {filteredPosts.map((post, index) => (
-        <Container key={index} onClick={() => handleOpenModal(post.clubName)}>
+        <Container key={index} onClick={() => handleOpenModal(post.clubName, post.id, post.clubId)}>
           <SearchItem
-            image={post.image}
+            image={post.imageUrl}
             clubName={post.clubName}
             category={post.category}
-            description={post.title}
+            description={post.postTitle}
           />
         </Container>
       ))}
@@ -81,10 +106,10 @@ const SearchItemContainer = ({ searchTerm }) => {
         <SearchClubModal
           show={showModal}
           handleClose={handleCloseModal}
-          title={modalContent.title}
+          title={modalContent.postTitle}
           clubName={modalContent.clubName}
-          img={modalContent.image}
-          description={modalContent.modalDescription}
+          img={modalContent.imageUrl}
+          description={modalContent.postContent}
         />
       )}
     </>

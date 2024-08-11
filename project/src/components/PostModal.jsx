@@ -1,31 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
-import { useNavigate } from 'react-router-dom';
 
-const SearchClubModal = ({ show, handleClose, title, clubName, img, description }) => {
+const PostModal = ({ show, handleClose, postTitle, postingTime, postContent, imageUrl }) => {
   const showHideClassName = show ? "display-block" : "display-none";
-  const navigate = useNavigate();
-
-  const handleClubNameClick = () => {
-    navigate(`/club-profile/${encodeURIComponent(clubName)}`);
-  };
 
   return (
     <>
       <StyledOverlay className={showHideClassName} onClick={handleClose} />
       <StyledModal className={showHideClassName}>
-        <ModalMain>
+      <ModalMain>
           <CloseButton onClick={handleClose}>
             <CloseIcon />
           </CloseButton>
-          <Title>{title}</Title>
-          <ClubName onClick={handleClubNameClick}>{clubName}</ClubName>
-          <ImagePlaceholder>
-            <img src={img} />
-          </ImagePlaceholder>
-          <Description>{description}</Description>
-          <ApplyButton>신청</ApplyButton>
+          <ContentBox>
+            <PostTitle>{postTitle}</PostTitle>
+            <PostingTime>{postingTime}</PostingTime>
+            {imageUrl && (
+              <ImageBox>
+                <img src={imageUrl} alt="Uploaded" />
+              </ImageBox>
+            )}
+            <PostContent>{postContent}</PostContent>
+          </ContentBox>
         </ModalMain>
       </StyledModal>
     </>
@@ -34,9 +31,12 @@ const SearchClubModal = ({ show, handleClose, title, clubName, img, description 
 
 const StyledModal = styled.div`
   position: fixed;
-  top: 140px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 340px;
-  height: 580px;
+  height: auto;
+  max-height: 480px;
   background: #fff;
   border-radius: 20px;
   display: flex;
@@ -92,33 +92,39 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-const Title = styled.div`
+const ContentBox = styled.div`
+  overflow-y: auto;
+  max-height: 455px;
+  padding: 8px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+`;
+
+const PostTitle = styled.div`
   font-size: 20px;
   font-weight: bold;
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: left;
 `;
 
-const ClubName = styled.div`
+const PostingTime = styled.div`
   font-size: 14px;
   color: #666;
   margin-top: 10px;
   text-align: left;
   cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
-const ImagePlaceholder = styled.div`
-  width: 100%;
+const ImageBox = styled.div`
+  width: 284px;
   height: 200px;
-  background-color: #ccc;
-  margin-top: 20px;
+  background-color: #D3D3D3;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #777;
+  margin-top: 10px;
+
   img {
     width: 100%;
     height: 100%;
@@ -126,26 +132,12 @@ const ImagePlaceholder = styled.div`
   }
 `;
 
-const Description = styled.div`
+const PostContent = styled.div`
   font-size: 16px;
   color: #333;
   margin-top: 20px;
+  margin-bottom: 20px;
   text-align: left;
 `;
 
-const ApplyButton = styled.button`
-  && {
-    font-family: 'MangoDdobak-B';
-    font-size: 16px;
-    position: absolute;
-    top: 520px;
-    left: 142.5px;
-    width: 55px;
-    height: 32px;
-    cursor: pointer;
-    border: none;
-    border-radius: 10px;
-  }
-`;
-
-export default SearchClubModal;
+export default PostModal;

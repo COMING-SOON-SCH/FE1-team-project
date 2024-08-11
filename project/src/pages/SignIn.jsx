@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSignIn from "../hooks/useSignIn";
 import styled, { createGlobalStyle } from 'styled-components';
@@ -50,12 +50,20 @@ const SignIn = () => {
     e.preventDefault();
     await signIn(id);
 
-    if (passwords.length > 0 && passwords.includes(pw)) {
-      navigate('/main');
-    } else {
-      alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-    }
+      if (passwords.length > 0 && passwords.includes(pw)) {
+        navigate('/main');
+      } else if (passwords.length > 0) {
+        alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+      }
   };
+
+  useEffect(() => {
+      if (passwords.length > 0 && passwords.includes(pw)) {
+        navigate('/main');
+      } else if (passwords.length > 0) {
+        alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+      }
+  }, [passwords]);
 
   const onClickForgotPassword = () => {
     alert("미지원 기능입니다.");
@@ -109,6 +117,7 @@ const SignInStyle = createGlobalStyle`
   }
 
   .btn {
+    margin-top: 25px;
     font-family: 'MangoDdobak-B';
   }
 `;

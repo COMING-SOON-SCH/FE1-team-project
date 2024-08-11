@@ -7,15 +7,34 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Button } from '@mui/material';
+import usePostClub from '../hooks/usePostClub';
 
 export default function MakeClub() {
-  const [category, setCategory] = React.useState('')
   const [clubName, setClubName] = React.useState('')
+  const [category, setCategory] = React.useState('')
+  const [personnel, setPersonnel] = React.useState(null)
+  const [description, setDescription] = React.useState('');
   const [introduction, setIntroduction] = React.useState('')
   const [activity, setActivity] = React.useState('')
+  const { postClub, isError } = usePostClub();
 
   const makeHandler = () => {
-    //만들기 기능 구현
+    if (clubName && category && personnel && description && introduction && activity) {
+      const club = {
+        clubName: clubName,
+        category: category,
+        personnel: personnel,
+        description: description,
+        introduction: introduction,
+        activity: activity
+      }
+
+      postClub(club)
+      if (isError) {
+        console.log('클럽 추가 중 오류 발생');
+      }
+    }
+    else alert('모든 빈 칸을 채워주세요');
   }
 
   return (
@@ -39,16 +58,13 @@ export default function MakeClub() {
           </FormControl>
         </StyledFormControl>
         <StyledFormControl>
-          <TextField label="모집 인원" type='number' />
+          <TextField label="모집 인원" type='number' onChange={(e) => setPersonnel(e.target.value)} />
         </StyledFormControl>
         <StyledFormControl>
           <TextField
-            label="동아리 소개"
-            multiline
-            minRows={1}
-            maxRows={3}
-            value={introduction}
-            onChange={(e) => setIntroduction(e.target.value)}
+            label="동아리 간단 설명"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             fullWidth
           />
         </StyledFormControl>

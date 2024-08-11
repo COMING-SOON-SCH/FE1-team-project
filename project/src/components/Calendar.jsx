@@ -16,7 +16,7 @@ export default function CalendarComponent() {
   useEffect(() => {
     getAllPlan();
     console.log('데이터 불러오기')
-  }, [showPopup, selectedData])
+  }, [selectedData])
 
   const onChange = (date) => {
     const formattedDate = date.format('YYYY-MM-DD');

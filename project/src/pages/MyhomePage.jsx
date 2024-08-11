@@ -1,40 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, IconButton, Avatar, Container, Stack } from '@mui/material';
 import OptionsIcon from '@mui/icons-material/Settings';
 import { PasswordField, SignupTextField } from '../components/SignupTextField';
 import styled from 'styled-components';
-// import usePostUser from '../hooks/usePostUser';
+import useGetInfoById from '../hooks/useGetInfoById';
 
 export function MyhomePage() {
-  const [name, setName] = useState('comingsoon');
-  const id='아이디';
-  const [password, setPassword] = useState('비밀번호');
-  const [currentPassword, setCurrentPassword] = useState('비밀번호');  
-  const [showPasswordChange, setShowPasswordChange] = useState(false);
-  // const {userData, setUserData} = useState({
-  //   name: 'comingsoon',
-  //   id: '아이디',
-  //   password: '비밀번호',
-  //   currentPassword: '비밀번호',
-  //   showPasswordChange: false,
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    id: '',
+    password: '',
+    currentPassword: '',
+    showPasswordChange: false,
+  });
 
-  // })
+  const { getInfoById, allUser } = useGetInfoById(); // 훅 사용
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getInfoById(); // 사용자 정보를 가져오는 훅 호출
+    };
+    fetchData();
+  }, [getInfoById]);
+
+  useEffect(() => {
+    if (allUser.length > 0) {
+      const user = allUser[0];
+      setUserInfo((prev) => ({
+        ...prev,
+        name: user.name || 'comingsoon',
+        password: user.password || '비밀번호',
+        currentPassword: user.password || '비밀번호',
+        id: user.id || '', // ID 업데이트
+      }));
+    }
+  }, [allUser]);
 
   const handlePasswordChangeClick = () => {
-    setShowPasswordChange(true);
+    setUserInfo((prev) => ({ ...prev, showPasswordChange: true }));
   };
 
   const handleSave = () => {
+    const { password, currentPassword } = userInfo;
     if (password !== currentPassword) {
-      // 비밀번호가 다를 경우에만 저장
-      setCurrentPassword(password);
-      console.log('이름:', name);
+      setUserInfo((prev) => ({ ...prev, currentPassword: password }));
+      console.log('이름:', userInfo.name);
       console.log('비밀번호:', password);
       alert('저장되었습니다.');
     } else {
       alert('새 비밀번호가 현재 비밀번호와 같습니다. 다른 비밀번호를 입력해주세요.');
     }
-    setShowPasswordChange(false); 
+    setUserInfo((prev) => ({ ...prev, showPasswordChange: false }));
   };
 
   return (
@@ -46,15 +62,10 @@ export function MyhomePage() {
         <ProfilePicture onUpload={handleUpload} />
       </BoxCenter>
       <ProfileInfo
-        name={name}
-        id={id}
-        password={password}
-        showPasswordChange={showPasswordChange}
-        setName={setName}
-        setPassword={setPassword}
+        userInfo={userInfo}
+        setUserInfo={setUserInfo}
         onPasswordChangeClick={handlePasswordChangeClick}
         onSave={handleSave}
-        currentPassword={currentPassword}
       />
     </Container>
   );
@@ -63,7 +74,6 @@ export function MyhomePage() {
 // 프로필 사진 컴포넌트
 const ProfilePicture = ({ onUpload }) => {
   const handleFileChange = (event) => {
-    // 파일 업로드 로직
     onUpload(event.target.files[0]);
   };
 
@@ -76,38 +86,40 @@ const ProfilePicture = ({ onUpload }) => {
 };
 
 // 프로필 정보 컴포넌트
-const ProfileInfo = ({
-  name,
-  id,
-  password,
-  showPasswordChange,
-  setName,
-  setPassword,
-  onPasswordChangeClick,
-  onSave,
-  currentPassword
-}) => {
+const ProfileInfo = ({ userInfo, setUserInfo, onPasswordChangeClick, onSave }) => {
   return (
     <BoxWrapper>
       <Stack spacing={4} fontSize={18}>
         <BoxItem>
           <Label>이름:</Label>
-          <SignupTextField texttype={'id'} fieldname={name} onChange={(e) => setName(e.target.value)} sx={{ flex: 1 }} />
+          <SignupTextField
+            texttype={'id'}
+            fieldname={userInfo.name}
+            onChange={(e) => setUserInfo((prev) => ({ ...prev, name: e.target.value }))}
+            sx={{ flex: 1 }}
+          />
         </BoxItem>
         <BoxItem>
           <Label>아이디:</Label>
-          <div style={{ flex: 1 , textAlign:'left'}}>{id}</div>
+          <div style={{ flex: 1, textAlign: 'left' }}>{userInfo.id}</div>
         </BoxItem>
-        {showPasswordChange && (
+        {userInfo.showPasswordChange && (
           <div>
-          <BoxItem>
-            <Label> 현재 비밀번호:</Label>
-            <div style={{ flex: 1, textAlign:'left'}}><Label>{currentPassword}</Label></div>
-          </BoxItem>
-          <BoxItem>
-            <Label>변경 비밀번호:</Label>
-            <PasswordField texttype={'password'} fieldname={currentPassword} onChange={(e) => setPassword(e.target.value)} sx={{ flex: 1 }} />
-          </BoxItem>
+            <BoxItem>
+              <Label>현재 비밀번호:</Label>
+              <div style={{ flex: 1, textAlign: 'left' }}>
+                <Label>{userInfo.currentPassword}</Label>
+              </div>
+            </BoxItem>
+            <BoxItem>
+              <Label>변경 비밀번호:</Label>
+              <PasswordField
+                texttype={'password'}
+                fieldname={userInfo.currentPassword}
+                onChange={(e) => setUserInfo((prev) => ({ ...prev, password: e.target.value }))}
+                sx={{ flex: 1 }}
+              />
+            </BoxItem>
           </div>
         )}
         <BoxButtonContainer>
@@ -134,8 +146,7 @@ const OptionsButton = () => {
 
 // 사진 업로드 핸들러
 const handleUpload = (file) => {
-  // 사진 업로드 로직
-  console.log(file);
+  console.log(file); // 사진 업로드 로직 추가 필요
 };
 
 // 스타일드 컴포넌트 정의
@@ -153,7 +164,7 @@ const BoxCenter = styled.div`
 
 const BoxWrapper = styled.div`
   width: 100%;
-  margin-top:20px;
+  margin-top: 20px;
 `;
 
 const BoxItem = styled.div`
@@ -173,8 +184,7 @@ const BoxButtonContainer = styled.div`
 
 const Label = styled.div`
   width: 45%;
-  text-align : left;
-  
+  text-align: left;
 `;
 
 export default MyhomePage;

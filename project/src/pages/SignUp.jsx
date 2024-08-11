@@ -3,67 +3,87 @@ import { SignupTextField, PasswordField, SearchField } from '../components/Signu
 import { Button, Stack, Grid } from '@mui/material';
 import CopyRight from '../components/CopyRight';
 import usePostUser from '../hooks/usePostUser';
-
+import SetCookie from '../components/SetCookie';
 
 const SignUp = () => {
   const [formValues, setFormValues] = useState({
-    nickname:'',
+    nickname: '',
     id: '',
     password: '',
     confirmPassword: '',
-    university: ''
+    university: '',
+    cookie: '',
   });
-
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: value
-    });
-  };
-
 
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   useEffect(() => {
-    if (formValues.confirmPassword && formValues.password !== formValues.confirmPassword) {
-      setConfirmPasswordError(true);
+    const checkPasswordMatch = () => {
+      setConfirmPasswordError(formValues.password !== formValues.confirmPassword);
+    };
+    checkPasswordMatch();
+  }, [formValues.password, formValues.confirmPassword]);
+
+  useEffect(() => {
+    const cookieExists = document.cookie.includes('cookie');
+    if (!cookieExists) {
+      const newCookieValue = Date.now().toString();
+      SetCookie('cookie', newCookieValue, { secure: true, 'max-age': 3600 });
+      setFormValues(prevValues => ({
+        ...prevValues,
+        cookie: newCookieValue,
+      }));
     } else {
-      setConfirmPasswordError(false);
+      const cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('cookie='))
+        .split('=')[1];
+      setFormValues(prevValues => ({
+        ...prevValues,
+        cookie: cookieValue,
+      }));
     }
-  }, [formValues.confirmPassword, formValues.password]);
+  }, []);
 
-  const { postUser, isError } = usePostUser();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
 
-  const handleSignupClick = async(e) => { 
+  const { postUser } = usePostUser();
+
+  const handleSignupClick = async (e) => {
     e.preventDefault();
     const { id, password, confirmPassword, university } = formValues;
-  
-    // 모든 필드가 채워졌는지 확인
     if (!id || !password || !confirmPassword || !university) {
       alert('모든 값을 입력해주세요');
       return;
     }
-    else if(confirmPasswordError){
+
+    if (confirmPasswordError) {
       alert('비밀번호가 다릅니다.');
+      return;
     }
-    (console.log('id = ',id,'\n password = ',password, '\nconfirmpassword = ',confirmPassword, '\nuniversity = ',university));
-    if (!isError) { 
-      try {
-        await postUser(formValues);
-        console.log('회원가입 완료');
-      } catch (error) {
-        console.error('회원가입 실패', error);
-      }
-    } else {
-      alert('회원가입 실패');
+
+    try {
+      await postUser(formValues);
+      console.log('회원가입 완료');
+      const newCookieValue = id;
+      SetCookie('id', newCookieValue, { secure: true, 'max-age': 3600 });
+      setFormValues(prevValues => ({
+        ...prevValues,
+        cookie: newCookieValue,
+      }));
+    } catch (error) {
+      console.error('회원가입 실패', error);
     }
   };
-
-
   return (
     <div style={BackGround}>
+      
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={6} sm={2} container direction="column" alignItems="center">
           <SignupTextField texttype={'id'} fieldname={'아이디'} value={formValues.id} onChange={handleInputChange} fullWidth />

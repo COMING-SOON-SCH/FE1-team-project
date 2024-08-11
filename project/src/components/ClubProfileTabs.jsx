@@ -4,10 +4,17 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import Zoom from '@mui/material/Zoom';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
+import { orderBy } from 'firebase/firestore';
 import GalleryModal from './GalleryModal';
 import PostModal from './PostModal';
+import GalleryAddModal from './GalleryAddModal'; 
+import PostAddModal from './PostAddModal';
 
 const ClubProfileTabs = ({ clubName }) => {
   const [value, setValue] = useState(0);
@@ -21,6 +28,9 @@ const ClubProfileTabs = ({ clubName }) => {
   const [selectedPostingTime, setSelectedPostingTime] = useState('');
   const [selectedPostContent, setSelectedPostContent] = useState('');
   const [showPostModal, setShowPostModal] = useState(false);
+  const [showGalleryAddModal, setShowGalleryAddModal] = useState(false); 
+  const [showPostAddModal, setShowPostAddModal] = useState(false);
+  const [clubId, setClubId] = useState('');
 
   useEffect(() => {
     const fetchTabData = async () => {
@@ -29,22 +39,14 @@ const ClubProfileTabs = ({ clubName }) => {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
+        const clubDocId = querySnapshot.docs[0].id;
         const clubDoc = querySnapshot.docs[0].data();
 
+        setClubId(clubDocId);
         setIntroduction(clubDoc.introduction);
 
-        const photosCollectionRef = collection(db, 'clubProfiles', querySnapshot.docs[0].id, 'photos');
-        const photosSnapshot = await getDocs(photosCollectionRef);
-        setPhotos(photosSnapshot.docs.map(doc => ({ url: doc.data().url, description: doc.data().description })));
-
-        const postsCollectionRef = collection(db, 'clubProfiles', querySnapshot.docs[0].id, 'posts');
-        const postsSnapshot = await getDocs(postsCollectionRef);
-        setPosts(postsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          title: doc.data().postTitle,
-          time: doc.data().postingTime,
-          content: doc.data().postContent
-        })));
+        await fetchPhotos(clubDocId);
+        await fetchPosts(clubDocId);
       } else {
         console.log('동아리 데이터가 없습니다.');
       }
@@ -52,6 +54,28 @@ const ClubProfileTabs = ({ clubName }) => {
 
     fetchTabData();
   }, [clubName]);
+
+  const fetchPhotos = async (clubDocId) => {
+    const photosCollectionRef = collection(db, 'clubProfiles', clubDocId, 'photos');
+    const photosSnapshot = await getDocs(query(photosCollectionRef, orderBy('timestamp', 'desc')));
+    setPhotos(photosSnapshot.docs.map(doc => ({
+      url: doc.data().url,
+      description: doc.data().description,
+      timestamp: doc.data().timestamp,
+    })));
+  };
+
+  const fetchPosts = async (clubDocId) => {
+    const postsCollectionRef = collection(db, 'clubProfiles', clubDocId, 'posts');
+    const postsSnapshot = await getDocs(query(postsCollectionRef, orderBy('postingTime', 'desc')));
+    setPosts(postsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      title: doc.data().postTitle,
+      time: doc.data().postingTime,
+      content: doc.data().postContent,
+      imageUrl: doc.data().imageUrl || null,
+    })));
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -71,11 +95,41 @@ const ClubProfileTabs = ({ clubName }) => {
     setSelectedPostTitle(post.title);
     setSelectedPostingTime(post.time);
     setSelectedPostContent(post.content);
+    setSelectedImage(post.imageUrl);
     setShowPostModal(true);
   };
 
   const handleClosePostModal = () => {
     setShowPostModal(false);
+  };
+
+  const handleOpenGalleryAddModal = () => {
+    setShowGalleryAddModal(true); 
+  };
+
+  const handleCloseGalleryAddModal = () => {
+    setShowGalleryAddModal(false); 
+  };
+
+  const handleOpenPostAddModal = () => {
+    setShowPostAddModal(true); 
+  };
+
+  const handleClosePostAddModal = () => {
+    setShowPostAddModal(false); 
+  };
+
+  const handleGalleryUploadSuccess = async () => {
+    await fetchPhotos(clubId);
+  };
+
+  const handlePostUploadSuccess = async () => {
+    await fetchPosts(clubId);
+  };
+
+  const transitionDuration = {
+    enter: 225,
+    exit: 195,
   };
 
   return (
@@ -103,6 +157,15 @@ const ClubProfileTabs = ({ clubName }) => {
             ))}
           </PhotosGrid>
         </RecentPhotosSection>
+        <Zoom
+          in={value === 1}
+          timeout={transitionDuration}
+          unmountOnExit
+        >
+          <StyledFab onClick={handleOpenGalleryAddModal}>
+            <AddIcon />
+          </StyledFab>
+        </Zoom>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <PostBoard>
@@ -116,6 +179,15 @@ const ClubProfileTabs = ({ clubName }) => {
             </Post>
           ))}
         </PostBoard>
+        <Zoom
+          in={value === 2}
+          timeout={transitionDuration}
+          unmountOnExit
+        >
+          <StyledFab onClick={handleOpenPostAddModal}>
+            <EditIcon />
+          </StyledFab>
+        </Zoom>
       </CustomTabPanel>
 
       {showGalleryModal && (
@@ -131,9 +203,28 @@ const ClubProfileTabs = ({ clubName }) => {
         <PostModal
           show={showPostModal}
           handleClose={handleClosePostModal}
-          title={selectedPostTitle}
+          postTitle={selectedPostTitle}
           postingTime={selectedPostingTime}
-          description={selectedPostContent}
+          postContent={selectedPostContent}
+          imageUrl={selectedImage}
+        />
+      )}
+
+      {showGalleryAddModal && (
+        <GalleryAddModal
+          show={showGalleryAddModal}
+          handleClose={handleCloseGalleryAddModal}
+          clubId={clubId}
+          onUploadSuccess={handleGalleryUploadSuccess}
+        />
+      )}
+
+      {showPostAddModal && (
+        <PostAddModal
+          show={showPostAddModal}
+          handleClose={handleClosePostAddModal}
+          clubId={clubId}
+          onUploadSuccess={handlePostUploadSuccess}
         />
       )}
     </TabSectionContainer>
@@ -213,6 +304,7 @@ const Photo = styled.img`
   height: 145px;
   border-radius: 8px;
   cursor: pointer;
+  object-fit: cover;
 `;
 
 const PostBoard = styled.div`
@@ -246,6 +338,20 @@ const PostingTime = styled.div`
   margin: 10px auto 0px 20px;
   color: #666;
   font-size: 12px;
+`;
+
+const StyledFab = styled(Fab)`
+  && {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    z-index: 900;
+    background-color: #4bc0ff;
+    color: white;
+    &:hover {
+      background-color: #33b8ff;
+    }
+  }
 `;
 
 export default ClubProfileTabs;

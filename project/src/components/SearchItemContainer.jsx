@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SearchItem from '../components/SearchItem';
 import SearchClubModal from '../components/SearchClubModal';
-import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc, query, where } from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
 const Container = styled.div`
@@ -20,8 +20,25 @@ const SearchItemContainer = ({ searchTerm, sortType }) => {
 
   useEffect(() => {
     const fetchPromotionPosts = async () => {
-      const querySnapshot = await getDocs(collection(db, 'searchClubPosts'));
-      const posts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const clubsSnapshot = await getDocs(collection(db, 'clubProfiles'));
+      let posts = [];
+
+      for (const clubDoc of clubsSnapshot.docs) {
+        const clubData = clubDoc.data();
+        const postsSnapshot = await getDocs(collection(db, 'clubProfiles', clubDoc.id, 'posts'));
+
+        postsSnapshot.docs.forEach(postDoc => {
+          const postData = postDoc.data();
+          posts.push({
+            id: postDoc.id,
+            clubName: clubData.clubName,
+            category: clubData.category,
+            ...postData,
+            clubId: clubDoc.id,
+          });
+        });
+      }
+
       setAllPosts(posts);
       setFilteredPosts(posts);
     };
@@ -31,11 +48,11 @@ const SearchItemContainer = ({ searchTerm, sortType }) => {
 
   useEffect(() => {
     let sortedPosts = [...allPosts];
-
+  
     if (sortType === 'latest') {
       sortedPosts.sort((a, b) => {
-        const timeA = new Date(a.timeStamp);
-        const timeB = new Date(b.timeStamp);
+        const timeA = new Date(a.postingTime);
+        const timeB = new Date(b.postingTime);
         return timeB - timeA || a.clubName.localeCompare(b.clubName);
       });
     } else if (sortType === 'popular') {
@@ -43,7 +60,7 @@ const SearchItemContainer = ({ searchTerm, sortType }) => {
     } else {
       sortedPosts.sort((a, b) => a.clubName.localeCompare(b.clubName));
     }
-
+  
     if (searchTerm) {
       setFilteredPosts(
         sortedPosts.filter(post =>
@@ -53,15 +70,15 @@ const SearchItemContainer = ({ searchTerm, sortType }) => {
     } else {
       setFilteredPosts(sortedPosts);
     }
-  }, [searchTerm, sortType, allPosts]);
+  }, [searchTerm, sortType, allPosts]);  
 
-  const handleOpenModal = async (clubName) => {
-    const post = filteredPosts.find(post => post.clubName === clubName);
+  const handleOpenModal = async (clubName, postId, clubId) => {
+    const post = filteredPosts.find(post => post.id === postId && post.clubId === clubId);
 
     if (post) {
-      const postRef = doc(db, 'searchClubPosts', post.id);
+      const postRef = doc(db, 'clubProfiles', clubId, 'posts', postId);
       await updateDoc(postRef, {
-        hits: post.hits + 1
+        hits: post.hits + 1,
       });
 
       setModalContent({ ...post, hits: post.hits + 1 });
@@ -76,12 +93,12 @@ const SearchItemContainer = ({ searchTerm, sortType }) => {
   return (
     <>
       {filteredPosts.map((post, index) => (
-        <Container key={index} onClick={() => handleOpenModal(post.clubName)}>
+        <Container key={index} onClick={() => handleOpenModal(post.clubName, post.id, post.clubId)}>
           <SearchItem
-            image={post.image}
+            image={post.imageUrl}
             clubName={post.clubName}
             category={post.category}
-            description={post.title}
+            description={post.postTitle}
           />
         </Container>
       ))}
@@ -89,10 +106,10 @@ const SearchItemContainer = ({ searchTerm, sortType }) => {
         <SearchClubModal
           show={showModal}
           handleClose={handleCloseModal}
-          title={modalContent.title}
+          title={modalContent.postTitle}
           clubName={modalContent.clubName}
-          img={modalContent.image}
-          description={modalContent.modalDescription}
+          img={modalContent.imageUrl}
+          description={modalContent.postContent}
         />
       )}
     </>

@@ -138,7 +138,7 @@ const ApplyButton = styled.button`
     font-family: 'MangoDdobak-B';
     font-size: 16px;
     position: absolute;
-    top: 500px;
+    top: 520px;
     left: 142.5px;
     width: 55px;
     height: 32px;

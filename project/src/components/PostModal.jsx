@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import CloseIcon from '@mui/icons-material/Close';
 
-const PostModal = ({ show, handleClose, title, postingTime, description }) => {
+const PostModal = ({ show, handleClose, postTitle, postingTime, postContent, imageUrl }) => {
   const showHideClassName = show ? "display-block" : "display-none";
 
   return (
@@ -14,9 +14,14 @@ const PostModal = ({ show, handleClose, title, postingTime, description }) => {
             <CloseIcon />
           </CloseButton>
           <ContentBox>
-            <Title>{title}</Title>
+            <PostTitle>{postTitle}</PostTitle>
             <PostingTime>{postingTime}</PostingTime>
-            <Description>{description}</Description>
+            {imageUrl && (
+              <ImageBox>
+                <img src={imageUrl} alt="Uploaded" />
+              </ImageBox>
+            )}
+            <PostContent>{postContent}</PostContent>
           </ContentBox>
         </ModalMain>
       </StyledModal>
@@ -95,7 +100,7 @@ const ContentBox = styled.div`
   margin-bottom: 10px;
 `;
 
-const Title = styled.div`
+const PostTitle = styled.div`
   font-size: 20px;
   font-weight: bold;
   margin-top: 10px;
@@ -110,10 +115,27 @@ const PostingTime = styled.div`
   cursor: pointer;
 `;
 
-const Description = styled.div`
+const ImageBox = styled.div`
+  width: 284px;
+  height: 200px;
+  background-color: #D3D3D3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #777;
+  margin-top: 10px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+const PostContent = styled.div`
   font-size: 16px;
   color: #333;
-  margin-top: 30px;
+  margin-top: 20px;
   margin-bottom: 20px;
   text-align: left;
 `;

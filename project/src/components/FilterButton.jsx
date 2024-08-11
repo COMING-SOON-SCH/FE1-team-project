@@ -6,10 +6,10 @@ import MenuItem from '@mui/material/MenuItem';
 
 const FilterButtonContainer = styled.div`
   && {
-  width: 393px;
-  top: 136px;
-  display: flex;
-  position: fixed;
+    width: 393px;
+    top: 136px;
+    display: flex;
+    position: fixed;
   }
 `;
 
@@ -46,12 +46,12 @@ const FilterButton = ({ onSortChange }) => {
       popular: '인기순',
       name: '이름순',
     }[newSortType] || '이름순';
-
+  
     setCurrentSort(sortLabel);
     onSortChange(newSortType);
     setAnchorEl(null);
   };
-
+  
   const handleClose = () => {
     setAnchorEl(null);
   };

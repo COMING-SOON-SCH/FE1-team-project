@@ -39,11 +39,7 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest",
-      "plugin:jsx-a11y/recommended"
-    ],
-    "plugins": [
-      "jsx-a11y"
+      "react-app/jest"
     ]
   },
   "browserslist": {
@@ -59,9 +55,8 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "eslint": "^8.0.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-jsx-a11y": "^6.9.0",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "eslint-config-react-app": "^7.0.1"
   }
 }

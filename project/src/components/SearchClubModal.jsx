@@ -22,7 +22,7 @@ const SearchClubModal = ({ show, handleClose, title, clubName, img, description 
           <Title>{title}</Title>
           <ClubName onClick={handleClubNameClick}>{clubName}</ClubName>
           <ImagePlaceholder>
-            <img src={img} />
+            <img src={img} alt='img'/>
           </ImagePlaceholder>
           <Description>{description}</Description>
           <ApplyButton>신청</ApplyButton>

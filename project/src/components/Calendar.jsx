@@ -15,13 +15,13 @@ export default function CalendarComponent() {
 
   useEffect(() => {
     getAllPlan();
-  }, [selectedData])
+    console.log('데이터 불러오기')
+  }, [showPopup, selectedData])
 
   const onChange = (date) => {
     const formattedDate = date.format('YYYY-MM-DD');
     setSelectedTime(formattedDate);
     const selected = allPlan.filter((item) => dayjs(item.date.toDate()).format('YYYY-MM-DD') === formattedDate);
-    console.log(selected)
     setSelectedData(selected);
     setShowPopup(true);
   }
@@ -67,6 +67,7 @@ export default function CalendarComponent() {
           data={selectedData}
           showPopup={showPopup}
           selectedTime={selectedTime}
+          setData={setSelectedData}
         />
       )}
     </CalendarContainer>

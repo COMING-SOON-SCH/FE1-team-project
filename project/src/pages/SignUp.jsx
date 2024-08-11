@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SignupTextField, PasswordField, SearchField } from '../components/SignupTextField';
 import { Button, Stack, Grid } from '@mui/material';
-import CopyRight from '../components/CopyRight';
 import usePostUser from '../hooks/usePostUser';
 import SetCookie from '../components/SetCookie';
 
@@ -94,7 +93,6 @@ const SignUp = () => {
           <Stack spacing={2} direction="row" justifyContent="center" marginTop={2}>
             <Button variant="contained" onClick={handleSignupClick}>회원가입</Button>
           </Stack>
-          <CopyRight></CopyRight>
         </Grid>
       </Grid>
     </div>

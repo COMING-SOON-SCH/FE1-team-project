@@ -96,12 +96,18 @@ const Title = styled.div`
   font-size: 20px;
   font-weight: bold;
   margin-top: 20px;
+  text-align: left;
 `;
 
 const ClubName = styled.div`
   font-size: 14px;
   color: #666;
   margin-top: 10px;
+  text-align: left;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const ImagePlaceholder = styled.div`
@@ -124,6 +130,7 @@ const Description = styled.div`
   font-size: 16px;
   color: #333;
   margin-top: 20px;
+  text-align: left;
 `;
 
 const ApplyButton = styled.button`

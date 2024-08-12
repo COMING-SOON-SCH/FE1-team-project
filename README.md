@@ -1,5 +1,82 @@
-# team-project
-FE1팀 팀프로젝트를 위한 소스코드 저장소입니다.
+# 1. Project Overview (프로젝트 개요)
+- 프로젝트 이름: 미정
+- 프로젝트 설명: 전국 대학 동아리 일정관리 및 홍보 커뮤니티
+
+<br/>
+
+# 2. Team Members (팀원 및 팀 소개)
+| 이동규 | 신유승 | 김나연 | 이승준 |
+|:------:|:------:|:------:|:------:|
+| <img src="https://github.com/user-attachments/assets/c1c2b1e3-656d-4712-98ab-a15e91efa2da" alt="이동규" width="150"> | <img src="https://github.com/user-attachments/assets/78ec4937-81bb-4637-975d-631eb3c4601e" alt="신유승" width="150"> | <img src="https://github.com/user-attachments/assets/78ce1062-80a0-4edb-bf6b-5efac9dd992e" alt="김나연" width="150"> | <img src="https://github.com/user-attachments/assets/beea8c64-19de-4d91-955f-ed24b813a638" alt="이승준" width="150"> |
+| PL | FE | FE | FE |
+| [GitHub](https://github.com/LDK1009) | [GitHub](https://github.com/SinYusi) | [GitHub](https://github.com/nay3on) | [GitHub](https://github.com/conconcc) |
+
+<br/>
+
+# 3. Technology Stack (기술 스택)
+
+## Language
+|  |  |
+|-----------------|-----------------|
+| HTML5    |<img src="https://github.com/user-attachments/assets/2e122e74-a28b-4ce7-aff6-382959216d31" alt="HTML5" width="100">| 
+| CSS3    |   <img src="https://github.com/user-attachments/assets/c531b03d-55a3-40bf-9195-9ff8c4688f13" alt="CSS3" width="100">|
+| Javascript    |  <img src="https://github.com/user-attachments/assets/4a7d7074-8c71-48b4-8652-7431477669d1" alt="Javascript" width="100"> | 
+
+
+<br/>
+
+## Frotend
+|  |  |  |
+|-----------------|-----------------|-----------------|
+| React    |  <img src="https://github.com/user-attachments/assets/e3b49dbb-981b-4804-acf9-012c854a2fd2" alt="React" width="100"> | 18.3.1    |
+| StyledComponents    |  <img src="https://github.com/user-attachments/assets/c9b26078-5d79-40cc-b120-69d9b3882786" alt="StyledComponents" width="100">| 6.1.12   |
+| MaterialUI    |  <img src="https://github.com/user-attachments/assets/75a46fa7-ebc0-4a9d-b648-c589f87c4b55" alt="MUI" width="100">    | 5.0.0  |
+| DayJs    |  <img src="https://github.com/user-attachments/assets/3632d7d6-8d43-4dd5-ba7a-501a2bc3a3e4" alt="DayJs" width="100">    | 1.11.12    |
+
+## Backend
+|  |  |  |
+|-----------------|-----------------|-----------------|
+| Firebase    |  <img src="https://github.com/user-attachments/assets/1694e458-9bb0-4a0b-8fe6-8efc6e675fa1" alt="Firebase" width="100">    | 10.12.5    |
+
+
+<br/>
+
+# 4. Project Structure (프로젝트 구조)
+- 디렉토리 구조 설명
+- 주요 파일 및 폴더 설명
+
+<br/>
+
+# 5. Key Features (주요 기능)
+- 프로젝트의 주요 기능 설명
+
+<br/>
+
+# 6. Getting Started (시작하기)
+- 설치 방법 (Installation)
+
+<br/>
+
+# 7. Development Workflow (개발 워크플로우)
+- 브랜치 전략 (Branch Strategy)
+- 커밋 메시지 규칙 (Commit Message Convention)
+
+<br/>
+
+# 8. Tasks & Responsibilities (작업 및 역할 분담)
+- 주요 작업 및 담당자 (Major Tasks and Assigned Members)
+  - 김나연: 홈, 로그인, 동아리 찾기, 동아리 프로필 페이지
+  - 이승준: 회원가입 페이지, 마이페이지
+  - 신유승: 메인페이지, 동아리 만들기 페이지
+- 작업 진행 상황 확인 방법 (How to Track Task Progress)
+- 협업 도구 (Collaboration Tools)
+
+<br/>
+
+# 9. Project Timeline (프로젝트 일정)
+- 시작, 마감 기한 (Deadlines)
+
+---
 
 <br/>
 

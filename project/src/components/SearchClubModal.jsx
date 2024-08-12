@@ -19,12 +19,14 @@ const SearchClubModal = ({ show, handleClose, title, clubName, img, description 
           <CloseButton onClick={handleClose}>
             <CloseIcon />
           </CloseButton>
-          <Title>{title}</Title>
-          <ClubName onClick={handleClubNameClick}>{clubName}</ClubName>
-          <ImagePlaceholder>
-            <img src={img} alt='img'/>
-          </ImagePlaceholder>
-          <Description>{description}</Description>
+          <ContentBox>
+            <Title>{title}</Title>
+            <ClubName onClick={handleClubNameClick}>{clubName}</ClubName>
+            <ImagePlaceholder>
+              <img src={img} />
+            </ImagePlaceholder>
+            <Description>{description}</Description>
+          </ContentBox>
           <ApplyButton>신청</ApplyButton>
         </ModalMain>
       </StyledModal>
@@ -92,10 +94,17 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
+const ContentBox = styled.div`
+  overflow-y: auto;
+  height: 465px;
+  padding: 8px;
+  margin-top: 20px;
+  margin-bottom: 50px;
+`;
+
 const Title = styled.div`
   font-size: 20px;
   font-weight: bold;
-  margin-top: 20px;
   text-align: left;
 `;
 
@@ -120,8 +129,8 @@ const ImagePlaceholder = styled.div`
   align-items: center;
   color: #777;
   img {
-    width: 100%;
-    height: 100%;
+    width: 284px;
+    height: 200px;
     object-fit: cover;
   }
 `;
@@ -138,7 +147,7 @@ const ApplyButton = styled.button`
     font-family: 'MangoDdobak-B';
     font-size: 16px;
     position: absolute;
-    top: 520px;
+    top: 535px;
     left: 142.5px;
     width: 55px;
     height: 32px;

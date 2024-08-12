@@ -11,6 +11,8 @@ const SearchClubModal = ({ show, handleClose, title, clubName, img, description 
     navigate(`/club-profile/${encodeURIComponent(clubName)}`);
   };
 
+  const isDefaultImage = img.includes('logo.svg'); // 이미지 등록을 하지 않은 홍보글은 디폴트 이미지
+
   return (
     <>
       <StyledOverlay className={showHideClassName} onClick={handleClose} />

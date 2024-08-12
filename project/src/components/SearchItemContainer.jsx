@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import SearchItem from '../components/SearchItem';
 import SearchClubModal from '../components/SearchClubModal';
-import { collection, getDocs, doc, updateDoc, query, where } from 'firebase/firestore';
-import { db } from '../firebaseConfig';
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { ref, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '../firebaseConfig';
 
 const Container = styled.div`
   width: 300px;
@@ -17,9 +18,15 @@ const SearchItemContainer = ({ searchTerm, sortType }) => {
   const [modalContent, setModalContent] = useState(null);
   const [allPosts, setAllPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [defaultImage, setDefaultImage] = useState('');
 
   useEffect(() => {
     const fetchPromotionPosts = async () => {
+
+      const logoRef = ref(storage, 'images/logo.svg');
+      const logoUrl = await getDownloadURL(logoRef);
+      setDefaultImage(logoUrl);
+
       const clubsSnapshot = await getDocs(collection(db, 'clubProfiles'));
       let posts = [];
 
@@ -34,6 +41,7 @@ const SearchItemContainer = ({ searchTerm, sortType }) => {
             clubName: clubData.clubName,
             category: clubData.category,
             ...postData,
+            imageUrl: postData.imageUrl || logoUrl, // 이미지 등록을 하지 않은 홍보글은 디폴트 이미지
             clubId: clubDoc.id,
           });
         });
@@ -70,7 +78,7 @@ const SearchItemContainer = ({ searchTerm, sortType }) => {
     } else {
       setFilteredPosts(sortedPosts);
     }
-  }, [searchTerm, sortType, allPosts]);  
+  }, [searchTerm, sortType, allPosts]);
 
   const handleOpenModal = async (clubName, postId, clubId) => {
     const post = filteredPosts.find(post => post.id === postId && post.clubId === clubId);

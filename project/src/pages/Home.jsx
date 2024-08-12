@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/logo.svg';
+import logo from '../assets/생성로고누끼.png';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -12,36 +12,14 @@ const LogoContainer = styled.div`
   justify-content: center;
   width: 200px;
   height: 200px;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow:5px 5px 10px 0px rgba(0,0,0,0.1);
   border-radius: 24px;
   margin-bottom: 10px;
   text-align: center;
   position: relative;
   font-size: 24px;
   font-weight: bold;
-  border: solid 1px #000;
-  &::before, &::after {
-    position: absolute;
-    background: inherit;
-    content: '';
-    z-index: 1;
-  }
-  &::before {
-    width: 140px;
-    left: 30px;
-    height: 203px;
-    top: -1.5px;
-  }
-  &::after {
-    height: 140px;
-    left: -1.5px;
-    width: 203px;
-    top: 30px;
-  }
-  & > * {
-    position: relative; 
-    z-index: 2;
-  }
 `;
 
 const AppLogo = styled.img.attrs({
